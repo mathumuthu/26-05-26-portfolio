@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Stackly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'stackly-black': '#0a0a0a',
+                        'stackly-dark': '#111111',
+                        'stackly-gray': '#1a1a1a',
+                        'stackly-blue': '#0033cc',
+                        'stackly-blue-light': '#0044ff',
+                        'stackly-text': '#888888',
+                        'stackly-text-light': '#cccccc',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0033cc; }
+
+        /* Preloader */
+        .preloader { position: fixed; inset: 0; z-index: 9999; background: #0a0a0a; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .preloader-text { font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 600; letter-spacing: 0.2em; }
+        .preloader-text span { display: inline-block; animation: preloaderBounce 1.4s ease-in-out infinite; }
+        .preloader-text span:nth-child(1) { animation-delay: 0s; }
+        .preloader-text span:nth-child(2) { animation-delay: 0.1s; }
+        .preloader-text span:nth-child(3) { animation-delay: 0.2s; }
+        .preloader-text span:nth-child(4) { animation-delay: 0.3s; }
+        .preloader-text span:nth-child(5) { animation-delay: 0.4s; }
+        .preloader-text span:nth-child(6) { animation-delay: 0.5s; }
+        .preloader-text span:nth-child(7) { animation-delay: 0.6s; }
+        @keyframes preloaderBounce { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-20px); opacity: 1; color: #0033cc; } }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: 9998; transition: opacity 0.3s ease; }
+        .cursor-dot { width: 8px; height: 8px; background: #0033cc; }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(0, 51, 204, 0.5); transition: width 0.3s, height 0.3s, border-color 0.3s; }
+        .cursor-outline.hovering { width: 60px; height: 60px; border-color: #0033cc; background: rgba(0, 51, 204, 0.1); }
+        @media (pointer: coarse) { .cursor-dot, .cursor-outline { display: none; } }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 3rem; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .header.scrolled { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); padding: 1rem 3rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* Logo */
+        .logo-container { position: relative; display: inline-flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 40px; height: 40px; position: relative; }
+        .logo-icon svg { width: 100%; height: 100%; animation: logoFloat 3s ease-in-out infinite; }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-3px) rotate(2deg); } 75% { transform: translateY(3px) rotate(-2deg); } }
+        .logo-text { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.05em; position: relative; }
+        .logo-text::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #0033cc; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .logo-container:hover .logo-text::after { width: 100%; }
+
+        /* Hamburger */
+        .hamburger { width: 32px; height: 24px; position: relative; cursor: pointer; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+        .hamburger span { display: block; width: 100%; height: 2px; background: #fff; border-radius: 2px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+        .hamburger.active span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+
+        /* Fullscreen Menu */
+        .fullscreen-menu { position: fixed; inset: 0; z-index: 99; background: #0a0a0a; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; }
+        .menu-item { font-size: clamp(2rem, 5vw, 4rem); font-weight: 700; display: block; padding: 0.5rem 0; position: relative; overflow: hidden; cursor: pointer; opacity: 0; transform: translateY(40px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fullscreen-menu.active .menu-item { opacity: 1; transform: translateY(0); }
+        .fullscreen-menu.active .menu-item:nth-child(1) { transition-delay: 0.1s; }
+        .fullscreen-menu.active .menu-item:nth-child(2) { transition-delay: 0.15s; }
+        .fullscreen-menu.active .menu-item:nth-child(3) { transition-delay: 0.2s; }
+        .fullscreen-menu.active .menu-item:nth-child(4) { transition-delay: 0.25s; }
+        .fullscreen-menu.active .menu-item:nth-child(5) { transition-delay: 0.3s; }
+        .fullscreen-menu.active .menu-item:nth-child(6) { transition-delay: 0.35s; }
+        .menu-item::before { content: attr(data-num); position: absolute; left: -60px; top: 50%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #0033cc; opacity: 0; transition: opacity 0.3s; }
+        .menu-item:hover::before { opacity: 1; }
+        .menu-item::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: #0033cc; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .menu-item:hover::after { width: 100%; }
+
+        /* ========== PAGE HERO ========== */
+        .page-hero { min-height: 70vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 120px 2rem 4rem; }
+        .page-hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%); }
+        .page-hero-particles { position: absolute; inset: 0; pointer-events: none; }
+        .page-particle { position: absolute; width: 3px; height: 3px; background: rgba(0,51,204,0.4); border-radius: 50%; animation: pageParticleFloat 10s ease-in-out infinite; }
+        @keyframes pageParticleFloat { 0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; } 25% { transform: translateY(-60px) translateX(30px); opacity: 0.6; } 50% { transform: translateY(-30px) translateX(-20px); opacity: 0.4; } 75% { transform: translateY(-90px) translateX(15px); opacity: 0.5; } }
+        .page-hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; }
+        .page-label { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; letter-spacing: 0.2em; color: #0033cc; margin-bottom: 1.5rem; display: block; animation: fadeInDown 1s ease forwards; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .page-title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 700; line-height: 1.05; animation: fadeInUp 1.2s ease 0.3s forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .page-title .highlight { color: #0033cc; position: relative; display: inline-block; }
+        .page-title .highlight::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 4px; background: #0033cc; transform: scaleX(0); transform-origin: left; animation: lineGrow 1s ease 1.5s forwards; }
+        @keyframes lineGrow { to { transform: scaleX(1); } }
+        .page-subtitle { font-size: clamp(1rem, 2vw, 1.25rem); color: #888; line-height: 1.7; margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; animation: fadeInUp 1.2s ease 0.6s forwards; opacity: 0; }
+        .scroll-line { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); width: 1px; height: 60px; background: linear-gradient(to bottom, #0033cc, transparent); animation: scrollLine 2s ease-in-out infinite; }
+        @keyframes scrollLine { 0%, 100% { transform: translateX(-50%) scaleY(1); opacity: 0.5; } 50% { transform: translateX(-50%) scaleY(0.5); opacity: 1; } }
+
+        /* Section Labels */
+        .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #444; letter-spacing: 0.05em; margin-bottom: 2rem; display: inline-block; position: relative; }
+        .section-label::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 30px; height: 1px; background: #0033cc; }
+        .section-title { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 1.1; }
+        .section-subtitle { font-size: clamp(1rem, 2vw, 1.25rem); color: #888; line-height: 1.6; max-width: 600px; }
+
+        /* ========== STORY SECTION ========== */
+        .story-section { padding: 8rem 3rem; position: relative; }
+        .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .story-image-wrapper { position: relative; overflow: hidden; border-radius: 16px; }
+        .story-image-wrapper::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,51,204,0.2) 0%, transparent 50%); z-index: 1; pointer-events: none; }
+        .story-image { width: 100%; height: 500px; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .story-image-wrapper:hover .story-image { transform: scale(1.05); }
+        .story-image-badge { position: absolute; bottom: -20px; right: -20px; width: 120px; height: 120px; border-radius: 50%; background: #0033cc; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; z-index: 2; animation: badgePulse 3s ease-in-out infinite; }
+        @keyframes badgePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,51,204,0.4); } 50% { box-shadow: 0 0 0 20px rgba(0,51,204,0); } }
+        .story-text h3 { font-size: 2rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.3; }
+        .story-text p { color: #888; line-height: 1.8; margin-bottom: 1.25rem; font-size: 1.05rem; }
+        .story-text .highlight { color: #fff; font-weight: 500; }
+
+        /* ========== MISSION / VISION CARDS ========== */
+        .mission-section { padding: 6rem 3rem; position: relative; }
+        .mission-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 3rem; transition: all 0.5s; position: relative; overflow: hidden; }
+        .mission-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #0033cc; transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
+        .mission-card:hover::before { transform: scaleX(1); }
+        .mission-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(0,51,204,0.2); transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        .mission-icon { width: 70px; height: 70px; border-radius: 16px; background: rgba(0,51,204,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: all 0.4s; }
+        .mission-card:hover .mission-icon { background: #0033cc; transform: rotate(10deg) scale(1.1); }
+        .mission-icon i { font-size: 1.75rem; color: #0033cc; transition: color 0.3s; }
+        .mission-card:hover .mission-icon i { color: #fff; }
+        .mission-card h3 { font-size: 1.75rem; font-weight: 700; margin-bottom: 1rem; }
+        .mission-card p { color: #888; line-height: 1.7; }
+
+        /* ========== VALUES ========== */
+        .values-section { padding: 8rem 3rem; position: relative; }
+        .value-card { display: flex; gap: 2rem; padding: 2.5rem; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; transition: all 0.5s; position: relative; overflow: hidden; }
+        .value-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 0; background: #0033cc; transition: height 0.5s; }
+        .value-card:hover::before { height: 100%; }
+        .value-card:hover { background: rgba(255,255,255,0.03); border-color: rgba(0,51,204,0.15); transform: translateX(10px); }
+        .value-number { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 700; color: rgba(0,51,204,0.3); line-height: 1; min-width: 60px; transition: color 0.3s; }
+        .value-card:hover .value-number { color: #0033cc; }
+        .value-content h4 { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .value-content p { color: #777; line-height: 1.6; font-size: 0.95rem; }
+
+        /* ========== TEAM GRID ========== */
+        .team-grid-section { padding: 8rem 3rem; position: relative; }
+        .team-card { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; transition: all 0.5s; }
+        .team-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+        .team-card-img { width: 100%; aspect-ratio: 3/4; object-fit: cover; transition: transform 0.6s, filter 0.6s; filter: grayscale(30%); }
+        .team-card:hover .team-card-img { transform: scale(1.08); filter: grayscale(0%); }
+        .team-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 40%, transparent 100%); opacity: 0; transition: opacity 0.4s; }
+        .team-card:hover .team-card-overlay { opacity: 1; }
+        .team-card-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem; transform: translateY(20px); opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .team-card:hover .team-card-info { transform: translateY(0); opacity: 1; }
+        .team-card-social { display: flex; gap: 0.75rem; margin-top: 1rem; }
+        .team-card-social a { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #fff; transition: all 0.3s; }
+        .team-card-social a:hover { background: #0033cc; transform: scale(1.15); }
+        .team-card-name { font-size: 1.4rem; font-weight: 700; }
+        .team-card-role { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.25rem; }
+
+        /* ========== TIMELINE ========== */
+        .timeline-section { padding: 8rem 3rem; position: relative; }
+        .timeline { position: relative; max-width: 1000px; margin: 0 auto; }
+        .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: linear-gradient(to bottom, transparent, #0033cc, #0033cc, transparent); transform: translateX(-50%); }
+        .timeline-item { display: flex; justify-content: flex-end; padding-right: 50%; position: relative; margin-bottom: 4rem; }
+        .timeline-item:nth-child(even) { justify-content: flex-start; padding-right: 0; padding-left: 50%; }
+        .timeline-dot { position: absolute; left: 50%; top: 0; transform: translateX(-50%); width: 16px; height: 16px; border-radius: 50%; background: #0033cc; border: 3px solid #0a0a0a; z-index: 2; animation: timelineDotPulse 2s ease-in-out infinite; }
+        @keyframes timelineDotPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0,51,204,0.4); } 50% { box-shadow: 0 0 0 10px rgba(0,51,204,0); } }
+        .timeline-content { max-width: 400px; padding: 1.5rem 2rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; transition: all 0.4s; }
+        .timeline-content:hover { background: rgba(255,255,255,0.04); border-color: rgba(0,51,204,0.2); transform: scale(1.02); }
+        .timeline-year { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #0033cc; margin-bottom: 0.5rem; }
+        .timeline-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .timeline-desc { color: #777; font-size: 0.9rem; line-height: 1.6; }
+
+        /* ========== STATS COUNTER ========== */
+        .stats-section { padding: 6rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
+        .stat-big { text-align: center; padding: 2rem; }
+        .stat-big-number { font-family: 'JetBrains Mono', monospace; font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; color: #fff; line-height: 1; position: relative; display: inline-block; }
+        .stat-big-number::after { content: ''; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 3px; background: #0033cc; }
+        .stat-big-label { color: #666; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1.5rem; }
+
+        /* ========== AWARDS / RECOGNITION ========== */
+        .awards-section { padding: 8rem 3rem; position: relative; }
+        .award-item { display: flex; align-items: center; gap: 2rem; padding: 1.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: all 0.4s; cursor: pointer; }
+        .award-item:hover { padding-left: 1rem; border-bottom-color: #0033cc; }
+        .award-icon { width: 50px; height: 50px; border-radius: 12px; background: rgba(0,51,204,0.1); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; color: #0033cc; transition: all 0.4s; flex-shrink: 0; }
+        .award-item:hover .award-icon { background: #0033cc; color: #fff; transform: rotate(15deg) scale(1.1); }
+        .award-content h4 { font-size: 1.15rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .award-content p { color: #666; font-size: 0.85rem; }
+        .award-year { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #444; margin-left: auto; flex-shrink: 0; }
+
+        /* ========== CTA ========== */
+        .cta-section { background: #0033cc; position: relative; overflow: hidden; padding: 8rem 3rem; }
+        .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%); animation: ctaGlow 4s ease-in-out infinite; }
+        @keyframes ctaGlow { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+        .cta-title { font-size: clamp(2rem, 6vw, 5rem); font-weight: 700; text-align: center; position: relative; z-index: 2; }
+        .cta-label { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; letter-spacing: 0.2em; text-align: center; display: block; margin-bottom: 2rem; position: relative; z-index: 2; }
+
+        /* ========== FOOTER ========== */
+        .footer-wrapper { padding: 5rem 2rem 2rem; background: #0a0a0a; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
+        @media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; } }
+        @media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+        .footer-brand-desc { color: #666; font-size: 0.9rem; line-height: 1.7; margin: 1rem 0 1.5rem; }
+        .footer-social { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .footer-social-link { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: #777; transition: all 0.4s; border: 1px solid rgba(255,255,255,0.08); }
+        .footer-social-link:hover { background: #0033cc; color: #fff; border-color: #0033cc; transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 20px rgba(0,51,204,0.3); }
+        .footer-heading { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #555; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.25rem; display: block; }
+        .footer-link { display: block; color: #999; font-size: 1rem; font-weight: 400; padding: 0.4rem 0; transition: all 0.3s; position: relative; width: fit-content; }
+        .footer-link::after { content: ''; position: absolute; bottom: 2px; left: 0; width: 0; height: 1px; background: #0033cc; transition: width 0.3s; }
+        .footer-link:hover { color: #fff; padding-left: 0.75rem; }
+        .footer-link:hover::after { width: 100%; }
+        .footer-contact-item { display: block; color: #ccc; font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; transition: color 0.3s; }
+        .footer-contact-item:hover { color: #0033cc; }
+        .footer-address { color: #555; font-size: 0.85rem; line-height: 1.6; margin-top: 0.75rem; }
+        .ecosystem-item { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; cursor: pointer; }
+        .ecosystem-item:hover { padding-left: 0.75rem; border-bottom-color: #0033cc; }
+        .ecosystem-item:hover .ecosystem-arrow { transform: translate(5px, -5px); color: #0033cc; }
+        .ecosystem-arrow { transition: all 0.3s; color: #444; }
+        .ecosystem-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #444; margin-right: 0.75rem; }
+        .ecosystem-name { font-weight: 500; color: #aaa; }
+        .footer-bottom { max-width: 1400px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        @media (max-width: 768px) { .footer-bottom { flex-direction: column; text-align: center; } }
+        .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .footer-legal a { color: #444; font-size: 0.8rem; transition: color 0.3s; }
+        .footer-legal a:hover { color: #888; }
+        .footer-copyright { color: #333; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
+
+        /* Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+        .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(60px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+        .reveal-scale { opacity: 0; transform: scale(0.9); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-scale.active { opacity: 1; transform: scale(1); }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header { padding: 1rem 1.5rem; }
+            .header.scrolled { padding: 0.75rem 1.5rem; }
+            .page-hero { min-height: 50vh; padding: 100px 1rem 3rem; }
+            .page-title { font-size: clamp(2rem, 10vw, 3.5rem); }
+            .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .story-image { height: 350px; }
+            .story-image-badge { width: 80px; height: 80px; font-size: 0.6rem; }
+            .timeline::before { left: 20px; }
+            .timeline-item { padding-left: 50px; padding-right: 0; justify-content: flex-start; }
+            .timeline-item:nth-child(even) { padding-left: 50px; }
+            .timeline-dot { left: 20px; }
+            .value-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+            .team-card-img { aspect-ratio: 1/1; }
+            .footer-wrapper { padding: 3rem 1.5rem 1.5rem; }
+            .stats-section { padding: 3rem 1.5rem; }
+            .awards-section { padding: 4rem 1.5rem; }
+            .story-section { padding: 4rem 1.5rem; }
+            .mission-section { padding: 4rem 1.5rem; }
+            .values-section { padding: 4rem 1.5rem; }
+            .team-grid-section { padding: 4rem 1.5rem; }
+            .timeline-section { padding: 4rem 1.5rem; }
+        }
+
+        /* Navigation Buttons */
+        .btn-group{
+          display:flex;
+          justify-content:center;
+          gap:15px;
+          flex-wrap:wrap;
+          padding: 2rem 1rem;
+          background: rgba(10,10,10,0.5);
+          border-top: 1px solid rgba(0,51,204,0.2);
+        }
+        .btn{
+          padding:14px 28px;
+          border:none;
+          border-radius:50px;
+          text-decoration:none;
+          font-size:15px;
+          font-weight:600;
+          transition:0.4s;
+          cursor:pointer;
+          display:inline-block;
+        }
+        .home-btn{
+          background:#0033cc;
+          color:#fff;
+        }
+        .home-btn:hover{
+          background:#0044ff;
+          transform:translateY(-3px);
+          box-shadow:0 8px 20px rgba(0,51,204,0.4);
+        }
+        .contact-btn{
+          background:transparent;
+          border:2px solid #0033cc;
+          color:#fff;
+        }
+        .contact-btn:hover{
+          background:#0033cc;
+          color:#fff;
+          transform:translateY(-3px);
+        }
+        
+        @media(max-width:768px){
+          .btn-group{
+            padding: 1.5rem 0.75rem;
+            gap: 10px;
+          }
+          .btn{
+            padding: 12px 20px;
+            font-size: 14px;
+          }
+        }
+        
+        @media(max-width:600px){
+          .btn-group{
+            flex-direction: column;
+            gap: 10px;
+          }
+          .btn{
+            width: 100%;
+            padding: 12px 16px;
+          }
+        }
+
+        ::selection { background: #0033cc; color: #fff; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-text">
+            <span>A</span><span>B</span><span>O</span><span>U</span><span>T</span><span>&nbsp;</span><span>U</span><span>S</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="flex items-center justify-between max-w-[1400px] mx-auto">
+            <a href="index.html" class="logo-container magnetic-btn">
+                <div class="logo-icon">
+                    <img src="stackly-logo.png" alt="Stackly logo">
+                </div>
+                <span class="logo-text">STACKLY</span>
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="index.html#contact" class="hidden md:flex items-center gap-2 text-sm font-medium hover:text-stackly-blue transition-colors magnetic-btn">
+                    <span>SAY HELLO</span>
+                    <i class="fas fa-arrow-up-right text-xs"></i>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu -->
+ <div class="fullscreen-menu" id="fullscreenMenu">
+        <div class="menu-bg-text">MENU</div>
+        <nav class="text-center relative z-10">
+            <a href="index.html" class="menu-item" data-num="[01]" onclick="closeMenu()">Home</a>
+            <a href="about.html" class="menu-item" data-num="[02]" onclick="closeMenu()">About us</a>
+            <a href="service.html" class="menu-item" data-num="[03]" onclick="closeMenu()">Services</a>
+            <!-- <a href="#process" class="menu-item" data-num="[04]" onclick="closeMenu()">Process</a> -->
+            <a href="casestudy.html" class="menu-item" data-num="[05]" onclick="closeMenu()">Casestudy</a>
+            <!-- <a href="#works" class="menu-item" data-num="[06]" onclick="closeMenu()">Case Studies</a> -->
+            <!-- <a href="#team" class="menu-item" data-num="[07]" onclick="closeMenu()">Our team</a> -->
+            <a href="contact.html" class="menu-item" data-num="[08]" onclick="closeMenu()">Contact</a>
+            <a href="" class="menu-item" data-num="[06]" onclick="closeMenu()">Login</a> 
+
+        </nav>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" id="hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-particles">
+            <div class="page-particle" style="top: 15%; left: 10%; animation-delay: 0s;"></div>
+            <div class="page-particle" style="top: 40%; left: 25%; animation-delay: 2s;"></div>
+            <div class="page-particle" style="top: 20%; left: 70%; animation-delay: 4s;"></div>
+            <div class="page-particle" style="top: 60%; left: 80%; animation-delay: 1s;"></div>
+            <div class="page-particle" style="top: 75%; left: 40%; animation-delay: 3s;"></div>
+            <div class="page-particle" style="top: 30%; left: 50%; animation-delay: 2.5s;"></div>
+            <div class="page-particle" style="top: 55%; left: 15%; animation-delay: 1.5s;"></div>
+            <div class="page-particle" style="top: 80%; left: 65%; animation-delay: 3.5s;"></div>
+        </div>
+        <div class="page-hero-content">
+            <span class="page-label">[ ABOUT STACKLY ]</span>
+            <h1 class="page-title">We build digital<br>products that <span class="highlight">matter</span></h1>
+            <p class="page-subtitle">A team of passionate creators, developers, and strategists dedicated to transforming ideas into exceptional digital experiences since 2021.</p>
+        </div>
+        <div class="scroll-line"></div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section" id="story">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">01</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Our<br>story</h2>
+                </div>
+            </div>
+            <div class="story-grid">
+                <div class="story-image-wrapper reveal-left">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80" alt="Our Team" class="story-image">
+                    <div class="story-image-badge">EST.<br>2021</div>
+                </div>
+                <div class="story-text reveal-right">
+                    <h3>From a small garage to a global digital agency</h3>
+                    <p>Stackly was founded in 2021 by a group of college friends who shared a common vision: <span class="highlight">to create digital products that truly make a difference.</span> What started as a small freelance operation has grown into a full-service software development company with clients across 15 countries.</p>
+                    <p>We believe that great software is born at the intersection of <span class="highlight">cutting-edge technology</span> and <span class="highlight">human-centered design.</span> Every project we undertake is driven by a deep understanding of user needs and business goals.</p>
+                    <p>Today, our team of 25+ professionals works remotely from around the world, bringing diverse perspectives and expertise to every challenge. We have delivered over 70 successful projects ranging from fintech platforms to AI-powered applications.</p>
+                    <div class="flex gap-8 mt-8">
+                        <div>
+                            <div class="text-3xl font-bold font-mono text-white">25+</div>
+                            <div class="text-sm text-gray-500 mt-1">Team Members</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold font-mono text-white">15</div>
+                            <div class="text-sm text-gray-500 mt-1">Countries</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold font-mono text-white">70+</div>
+                            <div class="text-sm text-gray-500 mt-1">Projects</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="mission-section" id="mission">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">02</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Mission &<br>Vision</h2>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="mission-card reveal">
+                    <div class="mission-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Our Mission</h3>
+                    <p>To empower businesses with innovative digital solutions that drive growth, enhance user experiences, and create lasting value. We strive to bridge the gap between complex technology and human needs, making digital transformation accessible to companies of all sizes.</p>
+                </div>
+                <div class="mission-card reveal reveal-delay-1">
+                    <div class="mission-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Our Vision</h3>
+                    <p>To become the most trusted digital partner for businesses worldwide, known for our technical excellence, creative innovation, and unwavering commitment to quality. We envision a future where every digital interaction is intuitive, impactful, and inspiring.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="values-section" id="values">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">03</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Core<br>values</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">The principles that guide every decision we make and every product we build.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="value-card reveal">
+                    <div class="value-number">01</div>
+                    <div class="value-content">
+                        <h4>Innovation First</h4>
+                        <p>We constantly push boundaries, exploring new technologies and creative solutions to deliver products that stand out in the market.</p>
+                    </div>
+                </div>
+                <div class="value-card reveal reveal-delay-1">
+                    <div class="value-number">02</div>
+                    <div class="value-content">
+                        <h4>User-Centric Design</h4>
+                        <p>Every pixel, every interaction, every feature is designed with the end user in mind. We create experiences that people love to use.</p>
+                    </div>
+                </div>
+                <div class="value-card reveal">
+                    <div class="value-number">03</div>
+                    <div class="value-content">
+                        <h4>Transparency</h4>
+                        <p>We believe in open communication with our clients. Clear timelines, honest feedback, and no hidden surprises throughout the project.</p>
+                    </div>
+                </div>
+                <div class="value-card reveal reveal-delay-1">
+                    <div class="value-number">04</div>
+                    <div class="value-content">
+                        <h4>Quality Excellence</h4>
+                        <p>We never compromise on quality. Rigorous testing, clean code, and attention to detail ensure products that perform flawlessly.</p>
+                    </div>
+                </div>
+                <div class="value-card reveal">
+                    <div class="value-number">05</div>
+                    <div class="value-content">
+                        <h4>Continuous Growth</h4>
+                        <p>Learning never stops at Stackly. Our team regularly upskills to stay ahead of industry trends and deliver cutting-edge solutions.</p>
+                    </div>
+                </div>
+                <div class="value-card reveal reveal-delay-1">
+                    <div class="value-number">06</div>
+                    <div class="value-content">
+                        <h4>Collaborative Spirit</h4>
+                        <p>We work as an extension of your team. True partnership means shared goals, mutual respect, and collective success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Grid -->
+    <section class="team-grid-section" id="team">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">04</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Meet the<br>team</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">The talented people behind our success.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="team-card reveal">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Alex Chen" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">Alex Chen</div>
+                        <div class="team-card-role">CEO & Founder</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Sarah Miller" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">Sarah Miller</div>
+                        <div class="team-card-role">Design Lead</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-behance"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80" alt="James Wilson" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">James Wilson</div>
+                        <div class="team-card-role">Tech Lead</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-stack-overflow"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Emily Davis" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">Emily Davis</div>
+                        <div class="team-card-role">Product Manager</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-medium-m"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Michael Roberts" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">Michael Roberts</div>
+                        <div class="team-card-role">Backend Developer</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80" alt="Lisa Chang" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">Lisa Chang</div>
+                        <div class="team-card-role">UI/UX Designer</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-dribbble"></i></a>
+                            <a href="#"><i class="fab fa-figma"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80" alt="David Park" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">David Park</div>
+                        <div class="team-card-role">DevOps Engineer</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-docker"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal reveal-delay-1">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80" alt="Anna Kovacs" class="team-card-img">
+                    <div class="team-card-overlay"></div>
+                    <div class="team-card-info">
+                        <div class="team-card-name">Anna Kovacs</div>
+                        <div class="team-card-role">Frontend Developer</div>
+                        <div class="team-card-social">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-github"></i></a>
+                            <a href="#"><i class="fab fa-codepen"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section" id="timeline">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">05</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Our<br>journey</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Key milestones that shaped who we are today.</p>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021</div>
+                        <div class="timeline-title">The Beginning</div>
+                        <div class="timeline-desc">Stackly founded by 3 college friends in a small garage in San Francisco. First client project delivered within the first month.</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2022</div>
+                        <div class="timeline-title">First Major Client</div>
+                        <div class="timeline-desc">Landed our first enterprise client - a fintech startup. Team grew to 8 members. Moved into our first proper office.</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023</div>
+                        <div class="timeline-title">Global Expansion</div>
+                        <div class="timeline-desc">Opened remote operations in Europe and Asia. Delivered 25+ projects. Recognized as "Top Emerging Tech Company" by TechCrunch.</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-title">AI Division Launch</div>
+                        <div class="timeline-desc">Launched dedicated AI/ML division. Partnered with 3 Fortune 500 companies. Team expanded to 20+ professionals.</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-title">Industry Recognition</div>
+                        <div class="timeline-desc">Won "Best Digital Agency" award. 50+ successful projects delivered. Expanded services to include blockchain and Web3 solutions.</div>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2026</div>
+                        <div class="timeline-title">The Future</div>
+                        <div class="timeline-desc">Now a team of 25+ across 15 countries. 70+ projects delivered. Setting new standards in digital innovation.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter -->
+    <section class="stats-section" id="stats">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="stat-big reveal">
+                    <div class="stat-big-number" data-target="70">0</div>
+                    <div class="stat-big-label">Projects Delivered</div>
+                </div>
+                <div class="stat-big reveal reveal-delay-1">
+                    <div class="stat-big-number" data-target="50">0</div>
+                    <div class="stat-big-label">Happy Clients</div>
+                </div>
+                <div class="stat-big reveal reveal-delay-2">
+                    <div class="stat-big-number" data-target="25">0</div>
+                    <div class="stat-big-label">Team Members</div>
+                </div>
+                <div class="stat-big reveal reveal-delay-3">
+                    <div class="stat-big-number" data-target="15">0</div>
+                    <div class="stat-big-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards -->
+    <section class="awards-section" id="awards">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">06</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Awards &<br>Recognition</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Honored by the industry for our commitment to excellence.</p>
+                </div>
+            </div>
+            <div class="max-w-[900px]">
+                <div class="award-item reveal">
+                    <div class="award-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="award-content">
+                        <h4>Best Digital Agency 2025</h4>
+                        <p>Digital Excellence Awards - Recognized for outstanding innovation and client satisfaction</p>
+                    </div>
+                    <div class="award-year">2025</div>
+                </div>
+                <div class="award-item reveal reveal-delay-1">
+                    <div class="award-icon"><i class="fas fa-award"></i></div>
+                    <div class="award-content">
+                        <h4>Top Emerging Tech Company</h4>
+                        <p>TechCrunch Annual Rankings - Fastest growing tech startup in the Bay Area</p>
+                    </div>
+                    <div class="award-year">2024</div>
+                </div>
+                <div class="award-item reveal">
+                    <div class="award-icon"><i class="fas fa-medal"></i></div>
+                    <div class="award-content">
+                        <h4>Excellence in UX Design</h4>
+                        <p>UX Design Awards - Gold medal for the NovaApp mobile interface redesign</p>
+                    </div>
+                    <div class="award-year">2024</div>
+                </div>
+                <div class="award-item reveal reveal-delay-1">
+                    <div class="award-icon"><i class="fas fa-star"></i></div>
+                    <div class="award-content">
+                        <h4>Clutch Top 100 Developers</h4>
+                        <p>Clutch.co Global Rankings - Among the top 100 software developers worldwide</p>
+                    </div>
+                    <div class="award-year">2023</div>
+                </div>
+                <div class="award-item reveal">
+                    <div class="award-icon"><i class="fas fa-rocket"></i></div>
+                    <div class="award-content">
+                        <h4>Innovation in Fintech</h4>
+                        <p>Fintech Breakthrough Awards - Best new payment platform solution</p>
+                    </div>
+                    <div class="award-year">2023</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="max-w-[900px] mx-auto text-center relative z-10">
+            <span class="cta-label">[ LET'S CONNECT ]</span>
+            <h2 class="cta-title">Ready to start<br>your project?</h2>
+            <a href="mailto:hello@stackly.com" class="cta-btn magnetic-btn">
+                <span>Get in touch</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-wrapper">
+        <div class="footer-grid">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden border-2 border-stackly-blue">
+                        <div class="w-full h-full bg-gradient-to-br from-gray-800 to-stackly-blue flex items-center justify-center font-mono font-bold text-lg text-white">S</div>
+                    </div>
+                    <span class="font-mono font-bold text-lg tracking-wider">STACKLY</span>
+                </div>
+                <p class="footer-brand-desc">Innovative software development company crafting digital experiences that matter.</p>
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                </div>
+            </div>
+            <div>
+                <span class="footer-heading">/ Quick Links</span>
+                <nav>
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="about.html" class="footer-link">About us</a>
+                    <a href="index.html#services" class="footer-link">Services</a>
+                    <a href="index.html#capabilities" class="footer-link">Capabilities</a>
+                    <a href="index.html#works" class="footer-link">Case studies</a>
+                    <a href="index.html#team" class="footer-link">Our team</a>
+                    <a href="index.html#insights" class="footer-link">Insights</a>
+                    <a href="index.html#contact" class="footer-link">Contact</a>
+                </nav>
+            </div>
+            <div>
+                <span class="footer-heading">/ Contact</span>
+                <a href="mailto:hello@stackly.com" class="footer-contact-item">hello@stackly.com</a>
+                <a href="tel:+12127089400" class="footer-contact-item">+1 212-708-9400</a>
+                <p class="footer-address">123 Innovation Drive<br>San Francisco, CA 94102</p>
+                <span class="footer-heading" style="margin-top: 1.5rem;">/ Info</span>
+                <a href="#" class="footer-link">Pricing</a>
+                <a href="#" class="footer-link">FAQ</a>
+                <a href="#" class="footer-link">Careers</a>
+            </div>
+            <div>
+                <span class="footer-heading">/ Ecosystem</span>
+                <div class="space-y-0">
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[01]</span><span class="ecosystem-name">Dribbble</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[02]</span><span class="ecosystem-name">Behance</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[03]</span><span class="ecosystem-name">Github</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[04]</span><span class="ecosystem-name">Codepen</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[05]</span><span class="ecosystem-name">Figma Community</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg overflow-hidden border border-gray-700">
+                    <div class="w-full h-full bg-gradient-to-br from-gray-800 to-stackly-blue flex items-center justify-center font-mono font-bold text-sm text-white">S</div>
+                </div>
+                <span class="font-mono font-bold text-sm tracking-wider">STACKLY</span>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <p class="footer-copyright">2026 Stackly. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorOutline = document.getElementById('cursorOutline');
+        let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            cursorOutline.style.left = outlineX + 'px';
+            cursorOutline.style.top = outlineY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.querySelectorAll('a, button, .magnetic-btn, .team-card, .award-item, .ecosystem-item, .value-card, .mission-card, .timeline-content').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovering'));
+        });
+
+        // Header Scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const fullscreenMenu = document.getElementById('fullscreenMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            fullscreenMenu.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            fullscreenMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Scroll Reveal
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Counter Animation
+        const statNumbers = document.querySelectorAll('.stat-big-number');
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const target = parseInt(entry.target.dataset.target);
+                    let current = 0;
+                    const increment = target / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            entry.target.textContent = target + '+';
+                            clearInterval(timer);
+                        } else {
+                            entry.target.textContent = Math.floor(current) + '+';
+                        }
+                    }, 30);
+                    counterObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        statNumbers.forEach(el => counterObserver.observe(el));
+
+        // Magnetic Button
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = 'translate(' + (x * 0.3) + 'px, ' + (y * 0.3) + 'px)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+    <div class="btn-group">
+      <a href="index.html" class="btn home-btn">🏠 Go Home</a>
+      <a href="contact.html" class="btn contact-btn">📧 Contact Us</a>
+    </div>
+</body>
+</html>

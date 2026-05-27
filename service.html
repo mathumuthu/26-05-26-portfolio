@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Stackly</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'stackly-black': '#0a0a0a',
+                        'stackly-dark': '#111111',
+                        'stackly-gray': '#1a1a1a',
+                        'stackly-blue': '#0033cc',
+                        'stackly-blue-light': '#0044ff',
+                        'stackly-text': '#888888',
+                        'stackly-text-light': '#cccccc',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #0033cc; }
+
+        /* Preloader */
+        .preloader { position: fixed; inset: 0; z-index: 9999; background: #0a0a0a; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .preloader-text { font-family: 'JetBrains Mono', monospace; font-size: 2rem; font-weight: 600; letter-spacing: 0.2em; }
+        .preloader-text span { display: inline-block; animation: preloaderBounce 1.4s ease-in-out infinite; }
+        .preloader-text span:nth-child(1) { animation-delay: 0s; }
+        .preloader-text span:nth-child(2) { animation-delay: 0.1s; }
+        .preloader-text span:nth-child(3) { animation-delay: 0.2s; }
+        .preloader-text span:nth-child(4) { animation-delay: 0.3s; }
+        .preloader-text span:nth-child(5) { animation-delay: 0.4s; }
+        .preloader-text span:nth-child(6) { animation-delay: 0.5s; }
+        .preloader-text span:nth-child(7) { animation-delay: 0.6s; }
+        .preloader-text span:nth-child(8) { animation-delay: 0.7s; }
+        @keyframes preloaderBounce { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-20px); opacity: 1; color: #0033cc; } }
+
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline { position: fixed; top: 0; left: 0; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; z-index: 9998; transition: opacity 0.3s ease; }
+        .cursor-dot { width: 8px; height: 8px; background: #0033cc; }
+        .cursor-outline { width: 40px; height: 40px; border: 1px solid rgba(0, 51, 204, 0.5); transition: width 0.3s, height 0.3s, border-color 0.3s; }
+        .cursor-outline.hovering { width: 60px; height: 60px; border-color: #0033cc; background: rgba(0, 51, 204, 0.1); }
+        @media (pointer: coarse) { .cursor-dot, .cursor-outline { display: none; } }
+
+        /* Header */
+        .header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.5rem 3rem; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .header.scrolled { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); padding: 1rem 3rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+        /* Logo */
+        .logo-container { position: relative; display: inline-flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 40px; height: 40px; position: relative; }
+        .logo-icon svg { width: 100%; height: 100%; animation: logoFloat 3s ease-in-out infinite; }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(0deg); } 25% { transform: translateY(-3px) rotate(2deg); } 75% { transform: translateY(3px) rotate(-2deg); } }
+        .logo-text { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 1.25rem; letter-spacing: 0.05em; position: relative; }
+        .logo-text::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: #0033cc; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .logo-container:hover .logo-text::after { width: 100%; }
+
+        /* Hamburger */
+        .hamburger { width: 32px; height: 24px; position: relative; cursor: pointer; display: flex; flex-direction: column; justify-content: center; gap: 6px; }
+        .hamburger span { display: block; width: 100%; height: 2px; background: #fff; border-radius: 2px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
+        .hamburger.active span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: translateY(-4px) rotate(-45deg); }
+
+        /* Fullscreen Menu */
+        .fullscreen-menu { position: fixed; inset: 0; z-index: 99; background: #0a0a0a; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fullscreen-menu.active { opacity: 1; visibility: visible; }
+        .menu-item { font-size: clamp(2rem, 5vw, 4rem); font-weight: 700; display: block; padding: 0.5rem 0; position: relative; overflow: hidden; cursor: pointer; opacity: 0; transform: translateY(40px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fullscreen-menu.active .menu-item { opacity: 1; transform: translateY(0); }
+        .fullscreen-menu.active .menu-item:nth-child(1) { transition-delay: 0.1s; }
+        .fullscreen-menu.active .menu-item:nth-child(2) { transition-delay: 0.15s; }
+        .fullscreen-menu.active .menu-item:nth-child(3) { transition-delay: 0.2s; }
+        .fullscreen-menu.active .menu-item:nth-child(4) { transition-delay: 0.25s; }
+        .fullscreen-menu.active .menu-item:nth-child(5) { transition-delay: 0.3s; }
+        .fullscreen-menu.active .menu-item:nth-child(6) { transition-delay: 0.35s; }
+        .fullscreen-menu.active .menu-item:nth-child(7) { transition-delay: 0.4s; }
+        .menu-item::before { content: attr(data-num); position: absolute; left: -60px; top: 50%; transform: translateY(-50%); font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #0033cc; opacity: 0; transition: opacity 0.3s; }
+        .menu-item:hover::before { opacity: 1; }
+        .menu-item::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 3px; background: #0033cc; transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .menu-item:hover::after { width: 100%; }
+
+        /* ========== PAGE HERO ========== */
+        .page-hero { min-height: 70vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 120px 2rem 4rem; }
+        .page-hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0a0a0a 0%, #111 50%, #0a0a0a 100%); }
+        .page-hero-particles { position: absolute; inset: 0; pointer-events: none; }
+        .page-particle { position: absolute; width: 3px; height: 3px; background: rgba(0,51,204,0.4); border-radius: 50%; animation: pageParticleFloat 10s ease-in-out infinite; }
+        @keyframes pageParticleFloat { 0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; } 25% { transform: translateY(-60px) translateX(30px); opacity: 0.6; } 50% { transform: translateY(-30px) translateX(-20px); opacity: 0.4; } 75% { transform: translateY(-90px) translateX(15px); opacity: 0.5; } }
+        .page-hero-content { position: relative; z-index: 2; text-align: center; max-width: 900px; }
+        .page-label { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; letter-spacing: 0.2em; color: #0033cc; margin-bottom: 1.5rem; display: block; animation: fadeInDown 1s ease forwards; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .page-title { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 700; line-height: 1.05; animation: fadeInUp 1.2s ease 0.3s forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .page-title .highlight { color: #0033cc; position: relative; display: inline-block; }
+        .page-title .highlight::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 100%; height: 4px; background: #0033cc; transform: scaleX(0); transform-origin: left; animation: lineGrow 1s ease 1.5s forwards; }
+        @keyframes lineGrow { to { transform: scaleX(1); } }
+        .page-subtitle { font-size: clamp(1rem, 2vw, 1.25rem); color: #888; line-height: 1.7; margin-top: 1.5rem; max-width: 600px; margin-left: auto; margin-right: auto; animation: fadeInUp 1.2s ease 0.6s forwards; opacity: 0; }
+        .scroll-line { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); width: 1px; height: 60px; background: linear-gradient(to bottom, #0033cc, transparent); animation: scrollLine 2s ease-in-out infinite; }
+        @keyframes scrollLine { 0%, 100% { transform: translateX(-50%) scaleY(1); opacity: 0.5; } 50% { transform: translateX(-50%) scaleY(0.5); opacity: 1; } }
+
+        /* Section Labels */
+        .section-label { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: #444; letter-spacing: 0.05em; margin-bottom: 2rem; display: inline-block; position: relative; }
+        .section-label::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 30px; height: 1px; background: #0033cc; }
+        .section-title { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 1.1; }
+        .section-subtitle { font-size: clamp(1rem, 2vw, 1.25rem); color: #888; line-height: 1.6; max-width: 600px; }
+
+        /* ========== SERVICES GRID ========== */
+        .services-section { padding: 8rem 3rem; position: relative; }
+        .service-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 3rem; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; cursor: pointer; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #0033cc; transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .service-card:hover::before { transform: scaleX(1); }
+        .service-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(0,51,204,0.2); transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
+        .service-card-icon { width: 70px; height: 70px; border-radius: 16px; background: rgba(0,51,204,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; z-index: 2; }
+        .service-card:hover .service-card-icon { background: #0033cc; transform: rotate(10deg) scale(1.1); }
+        .service-card-icon i { font-size: 1.75rem; color: #0033cc; transition: color 0.3s; }
+        .service-card:hover .service-card-icon i { color: #fff; }
+        .service-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; position: relative; z-index: 2; }
+        .service-card p { color: #888; line-height: 1.7; margin-bottom: 1.5rem; position: relative; z-index: 2; }
+        .service-card-features { list-style: none; position: relative; z-index: 2; }
+        .service-card-features li { display: flex; align-items: center; gap: 0.75rem; color: #aaa; font-size: 0.9rem; padding: 0.4rem 0; }
+        .service-card-features li i { color: #0033cc; font-size: 0.7rem; }
+        .service-card-number { position: absolute; top: 1.5rem; right: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 3rem; font-weight: 700; color: rgba(0,51,204,0.08); transition: color 0.4s; }
+        .service-card:hover .service-card-number { color: rgba(0,51,204,0.2); }
+
+        /* ========== PROCESS SECTION ========== */
+        .process-section { padding: 8rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
+        .process-card { display: flex; gap: 2rem; padding: 2.5rem; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; transition: all 0.5s; position: relative; overflow: hidden; }
+        .process-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 0; background: #0033cc; transition: height 0.5s; }
+        .process-card:hover::before { height: 100%; }
+        .process-card:hover { background: rgba(255,255,255,0.03); border-color: rgba(0,51,204,0.15); transform: translateX(10px); }
+        .process-number { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 700; color: rgba(0,51,204,0.3); line-height: 1; min-width: 60px; transition: color 0.3s; }
+        .process-card:hover .process-number { color: #0033cc; }
+        .process-content h4 { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .process-content p { color: #777; line-height: 1.6; font-size: 0.95rem; }
+        .process-arrow { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); color: #333; font-size: 1.25rem; transition: all 0.4s; }
+        .process-card:hover .process-arrow { color: #0033cc; transform: translateY(-50%) translateX(5px); }
+
+        /* ========== TECH STACK ========== */
+        .tech-section { padding: 8rem 3rem; position: relative; }
+        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.5rem; }
+        .tech-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; transition: all 0.4s; cursor: pointer; }
+        .tech-item:hover { background: rgba(0,51,204,0.08); border-color: rgba(0,51,204,0.3); transform: translateY(-5px); }
+        .tech-item i { font-size: 2.5rem; color: #555; transition: all 0.4s; }
+        .tech-item:hover i { color: #0033cc; transform: scale(1.1); }
+        .tech-item span { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #777; transition: color 0.3s; }
+        .tech-item:hover span { color: #fff; }
+
+        /* ========== PRICING CARDS ========== */
+        .pricing-section { padding: 8rem 3rem; position: relative; }
+        .pricing-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 3rem 2.5rem; transition: all 0.5s; position: relative; overflow: hidden; text-align: center; }
+        .pricing-card.featured { background: rgba(0,51,204,0.05); border-color: rgba(0,51,204,0.3); }
+        .pricing-card.featured::before { content: 'POPULAR'; position: absolute; top: 1.5rem; right: -2rem; background: #0033cc; color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 0.4rem 3rem; transform: rotate(45deg); }
+        .pricing-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.3); border-color: rgba(0,51,204,0.2); }
+        .pricing-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .pricing-card .price { font-family: 'JetBrains Mono', monospace; font-size: 3rem; font-weight: 700; color: #fff; margin: 1.5rem 0; }
+        .pricing-card .price span { font-size: 1rem; color: #666; font-weight: 400; }
+        .pricing-features { list-style: none; text-align: left; margin: 2rem 0; }
+        .pricing-features li { display: flex; align-items: center; gap: 0.75rem; color: #aaa; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .pricing-features li i { color: #0033cc; font-size: 0.8rem; }
+        .pricing-features li.disabled { color: #444; }
+        .pricing-features li.disabled i { color: #333; }
+        .pricing-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; color: #fff; font-weight: 500; transition: all 0.4s; text-decoration: none; }
+        .pricing-btn:hover { background: #0033cc; border-color: #0033cc; transform: scale(1.05); }
+        .pricing-card.featured .pricing-btn { background: #0033cc; border-color: #0033cc; }
+        .pricing-card.featured .pricing-btn:hover { background: #0044ff; }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonials-section { padding: 8rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
+        .testimonial-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 2.5rem; transition: all 0.5s; position: relative; }
+        .testimonial-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(0,51,204,0.2); transform: translateY(-5px); }
+        .testimonial-quote { font-size: 1.1rem; color: #ccc; line-height: 1.7; margin-bottom: 2rem; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .testimonial-author img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+        .testimonial-author-info h4 { font-weight: 600; font-size: 1rem; }
+        .testimonial-author-info p { color: #666; font-size: 0.85rem; }
+        .testimonial-stars { color: #0033cc; margin-bottom: 1.5rem; font-size: 0.9rem; }
+
+        /* ========== CTA ========== */
+        .cta-section { background: #0033cc; position: relative; overflow: hidden; padding: 8rem 3rem; }
+        .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%); animation: ctaGlow 4s ease-in-out infinite; }
+        @keyframes ctaGlow { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+        .cta-title { font-size: clamp(2rem, 6vw, 5rem); font-weight: 700; text-align: center; position: relative; z-index: 2; }
+        .cta-label { font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; letter-spacing: 0.2em; text-align: center; display: block; margin-bottom: 2rem; position: relative; z-index: 2; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 1rem; padding: 1.25rem 3rem; background: #fff; color: #0033cc; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.4s; position: relative; z-index: 2; margin-top: 2rem; }
+        .cta-btn:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+
+        /* ========== FOOTER ========== */
+        .footer-wrapper { padding: 5rem 2rem 2rem; background: #0a0a0a; }
+        .footer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
+        @media (max-width: 1024px) { .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; } }
+        @media (max-width: 640px) { .footer-grid { grid-template-columns: 1fr; gap: 2rem; } }
+        .footer-brand-desc { color: #666; font-size: 0.9rem; line-height: 1.7; margin: 1rem 0 1.5rem; }
+        .footer-social { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+        .footer-social-link { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; color: #777; transition: all 0.4s; border: 1px solid rgba(255,255,255,0.08); }
+        .footer-social-link:hover { background: #0033cc; color: #fff; border-color: #0033cc; transform: translateY(-5px) scale(1.1); box-shadow: 0 10px 20px rgba(0,51,204,0.3); }
+        .footer-heading { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #555; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.25rem; display: block; }
+        .footer-link { display: block; color: #999; font-size: 1rem; font-weight: 400; padding: 0.4rem 0; transition: all 0.3s; position: relative; width: fit-content; }
+        .footer-link::after { content: ''; position: absolute; bottom: 2px; left: 0; width: 0; height: 1px; background: #0033cc; transition: width 0.3s; }
+        .footer-link:hover { color: #fff; padding-left: 0.75rem; }
+        .footer-link:hover::after { width: 100%; }
+        .footer-contact-item { display: block; color: #ccc; font-size: 1rem; font-weight: 500; margin-bottom: 0.5rem; transition: color 0.3s; }
+        .footer-contact-item:hover { color: #0033cc; }
+        .footer-address { color: #555; font-size: 0.85rem; line-height: 1.6; margin-top: 0.75rem; }
+        .ecosystem-item { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); transition: all 0.3s; cursor: pointer; }
+        .ecosystem-item:hover { padding-left: 0.75rem; border-bottom-color: #0033cc; }
+        .ecosystem-item:hover .ecosystem-arrow { transform: translate(5px, -5px); color: #0033cc; }
+        .ecosystem-arrow { transition: all 0.3s; color: #444; }
+        .ecosystem-num { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #444; margin-right: 0.75rem; }
+        .ecosystem-name { font-weight: 500; color: #aaa; }
+        .footer-bottom { max-width: 1400px; margin: 3rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: row; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+        @media (max-width: 768px) { .footer-bottom { flex-direction: column; text-align: center; } }
+        .footer-legal { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+        .footer-legal a { color: #444; font-size: 0.8rem; transition: color 0.3s; }
+        .footer-legal a:hover { color: #888; }
+        .footer-copyright { color: #333; font-size: 0.8rem; font-family: 'JetBrains Mono', monospace; }
+
+        /* Reveal Animations */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.15s; }
+        .reveal-delay-2 { transition-delay: 0.3s; }
+        .reveal-delay-3 { transition-delay: 0.45s; }
+        .reveal-left { opacity: 0; transform: translateX(-60px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-left.active { opacity: 1; transform: translateX(0); }
+        .reveal-right { opacity: 0; transform: translateX(60px); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-right.active { opacity: 1; transform: translateX(0); }
+        .reveal-scale { opacity: 0; transform: scale(0.9); transition: all 0.9s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal-scale.active { opacity: 1; transform: scale(1); }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .header { padding: 1rem 1.5rem; }
+            .header.scrolled { padding: 0.75rem 1.5rem; }
+            .page-hero { min-height: 50vh; padding: 100px 1rem 3rem; }
+            .page-title { font-size: clamp(2rem, 10vw, 3.5rem); }
+            .services-section { padding: 4rem 1.5rem; }
+            .service-card { padding: 2rem; }
+            .service-card-number { font-size: 2rem; }
+            .process-section { padding: 4rem 1.5rem; }
+            .process-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+            .process-arrow { display: none; }
+            .tech-section { padding: 4rem 1.5rem; }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+            .pricing-section { padding: 4rem 1.5rem; }
+            .testimonials-section { padding: 4rem 1.5rem; }
+            .footer-wrapper { padding: 3rem 1.5rem 1.5rem; }
+            .cta-section { padding: 4rem 1.5rem; }
+        }
+
+        /* Navigation Buttons */
+        .btn-group{
+          display:flex;
+          justify-content:center;
+          gap:15px;
+          flex-wrap:wrap;
+          padding: 2rem 1rem;
+          background: rgba(10,10,10,0.5);
+          border-top: 1px solid rgba(0,51,204,0.2);
+        }
+        .btn{
+          padding:14px 28px;
+          border:none;
+          border-radius:50px;
+          text-decoration:none;
+          font-size:15px;
+          font-weight:600;
+          transition:0.4s;
+          cursor:pointer;
+          display:inline-block;
+        }
+        .home-btn{
+          background:#0033cc;
+          color:#fff;
+        }
+        .home-btn:hover{
+          background:#0044ff;
+          transform:translateY(-3px);
+          box-shadow:0 8px 20px rgba(0,51,204,0.4);
+        }
+        .contact-btn{
+          background:transparent;
+          border:2px solid #0033cc;
+          color:#fff;
+        }
+        .contact-btn:hover{
+          background:#0033cc;
+          color:#fff;
+          transform:translateY(-3px);
+        }
+        
+        @media(max-width:768px){
+          .btn-group{
+            padding: 1.5rem 0.75rem;
+            gap: 10px;
+          }
+          .btn{
+            padding: 12px 20px;
+            font-size: 14px;
+          }
+        }
+        
+        @media(max-width:600px){
+          .btn-group{
+            flex-direction: column;
+            gap: 10px;
+          }
+          .btn{
+            width: 100%;
+            padding: 12px 16px;
+          }
+        }
+
+        ::selection { background: #0033cc; color: #fff; }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-outline" id="cursorOutline"></div>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-text">
+            <span>S</span><span>E</span><span>R</span><span>V</span><span>I</span><span>C</span><span>E</span><span>S</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="flex items-center justify-between max-w-[1400px] mx-auto">
+            <a href="index.html" class="logo-container magnetic-btn">
+                <div class="logo-icon">
+                    <img src="stackly-logo.png" alt="Stackly logo">
+                </div>
+                <span class="logo-text">STACKLY</span>
+            </a>
+            <div class="flex items-center gap-6">
+                <a href="index.html#contact" class="hidden md:flex items-center gap-2 text-sm font-medium hover:text-stackly-blue transition-colors magnetic-btn">
+                    <span>SAY HELLO</span>
+                    <i class="fas fa-arrow-up-right text-xs"></i>
+                </a>
+                <button class="hamburger" id="hamburger" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu -->
+    <div class="fullscreen-menu" id="fullscreenMenu">
+        <div class="menu-bg-text">MENU</div>
+        <nav class="text-center relative z-10">
+            <a href="index.html" class="menu-item" data-num="[01]" onclick="closeMenu()">Home</a>
+            <a href="about.html" class="menu-item" data-num="[02]" onclick="closeMenu()">About us</a>
+            <a href="service.html" class="menu-item" data-num="[03]" onclick="closeMenu()">Services</a>
+            <a href="casestudy.html" class="menu-item" data-num="[04]" onclick="closeMenu()">Casestudy</a>
+            <a href="contact.html" class="menu-item" data-num="[05]" onclick="closeMenu()">Contact</a>
+            <a href="login.html" class="menu-item" data-num="[06]" onclick="closeMenu()">Login</a>
+        </nav>
+    </div>
+
+    <!-- Page Hero -->
+    <section class="page-hero" id="hero">
+        <div class="page-hero-bg"></div>
+        <div class="page-hero-particles">
+            <div class="page-particle" style="top: 15%; left: 10%; animation-delay: 0s;"></div>
+            <div class="page-particle" style="top: 40%; left: 25%; animation-delay: 2s;"></div>
+            <div class="page-particle" style="top: 20%; left: 70%; animation-delay: 4s;"></div>
+            <div class="page-particle" style="top: 60%; left: 80%; animation-delay: 1s;"></div>
+            <div class="page-particle" style="top: 75%; left: 40%; animation-delay: 3s;"></div>
+            <div class="page-particle" style="top: 30%; left: 50%; animation-delay: 2.5s;"></div>
+            <div class="page-particle" style="top: 55%; left: 15%; animation-delay: 1.5s;"></div>
+            <div class="page-particle" style="top: 80%; left: 65%; animation-delay: 3.5s;"></div>
+        </div>
+        <div class="page-hero-content">
+            <span class="page-label">[ OUR SERVICES ]</span>
+            <h1 class="page-title">Digital solutions<br>that <span class="highlight">scale</span></h1>
+            <p class="page-subtitle">From concept to deployment, we deliver end-to-end software solutions that drive business growth and transform user experiences.</p>
+        </div>
+        <div class="scroll-line"></div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-section" id="services">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">01</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">What we<br>do</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Comprehensive digital services tailored to your business needs.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="service-card reveal">
+                    <div class="service-card-number">01</div>
+                    <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Web Development</h3>
+                    <p>Custom websites and web applications built with modern frameworks. From landing pages to complex SaaS platforms.</p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check"></i> React / Next.js / Vue</li>
+                        <li><i class="fas fa-check"></i> Responsive & PWA</li>
+                        <li><i class="fas fa-check"></i> API Integration</li>
+                        <li><i class="fas fa-check"></i> Performance Optimized</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal reveal-delay-1">
+                    <div class="service-card-number">02</div>
+                    <div class="service-card-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <h3>Mobile Apps</h3>
+                    <p>Native and cross-platform mobile applications for iOS and Android that deliver exceptional user experiences.</p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check"></i> React Native / Flutter</li>
+                        <li><i class="fas fa-check"></i> iOS & Android</li>
+                        <li><i class="fas fa-check"></i> Push Notifications</li>
+                        <li><i class="fas fa-check"></i> App Store Publishing</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-card-number">03</div>
+                    <div class="service-card-icon"><i class="fas fa-paint-brush"></i></div>
+                    <h3>UI/UX Design</h3>
+                    <p>User-centered design that combines aesthetics with functionality. We create interfaces users love to interact with.</p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check"></i> User Research</li>
+                        <li><i class="fas fa-check"></i> Wireframing & Prototyping</li>
+                        <li><i class="fas fa-check"></i> Design Systems</li>
+                        <li><i class="fas fa-check"></i> Usability Testing</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal reveal-delay-1">
+                    <div class="service-card-number">04</div>
+                    <div class="service-card-icon"><i class="fas fa-brain"></i></div>
+                    <h3>AI & Machine Learning</h3>
+                    <p>Intelligent solutions powered by cutting-edge AI. From chatbots to predictive analytics and computer vision.</p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check"></i> NLP & Chatbots</li>
+                        <li><i class="fas fa-check"></i> Predictive Analytics</li>
+                        <li><i class="fas fa-check"></i> Computer Vision</li>
+                        <li><i class="fas fa-check"></i> MLOps Pipeline</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal">
+                    <div class="service-card-number">05</div>
+                    <div class="service-card-icon"><i class="fas fa-cloud"></i></div>
+                    <h3>Cloud & DevOps</h3>
+                    <p>Scalable cloud infrastructure and automated deployment pipelines. We ensure your systems run smoothly 24/7.</p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check"></i> AWS / Azure / GCP</li>
+                        <li><i class="fas fa-check"></i> CI/CD Pipelines</li>
+                        <li><i class="fas fa-check"></i> Kubernetes</li>
+                        <li><i class="fas fa-check"></i> Monitoring & Logging</li>
+                    </ul>
+                </div>
+                <div class="service-card reveal reveal-delay-1">
+                    <div class="service-card-number">06</div>
+                    <div class="service-card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3>Cybersecurity</h3>
+                    <p>Protect your digital assets with our comprehensive security solutions. Audit, penetration testing, and compliance.</p>
+                    <ul class="service-card-features">
+                        <li><i class="fas fa-check"></i> Security Audits</li>
+                        <li><i class="fas fa-check"></i> Penetration Testing</li>
+                        <li><i class="fas fa-check"></i> Compliance (GDPR/SOC2)</li>
+                        <li><i class="fas fa-check"></i> Incident Response</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section" id="process">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">02</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Our<br>process</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">A proven methodology that ensures project success from day one.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="process-card reveal">
+                    <div class="process-number">01</div>
+                    <div class="process-content">
+                        <h4>Discovery & Strategy</h4>
+                        <p>We start by understanding your business goals, target audience, and competitive landscape. Deep research drives every decision.</p>
+                    </div>
+                    <i class="fas fa-arrow-right process-arrow"></i>
+                </div>
+                <div class="process-card reveal reveal-delay-1">
+                    <div class="process-number">02</div>
+                    <div class="process-content">
+                        <h4>Design & Prototyping</h4>
+                        <p>Wireframes evolve into high-fidelity prototypes. We iterate based on feedback until the design perfectly aligns with your vision.</p>
+                    </div>
+                    <i class="fas fa-arrow-right process-arrow"></i>
+                </div>
+                <div class="process-card reveal">
+                    <div class="process-number">03</div>
+                    <div class="process-content">
+                        <h4>Development & Testing</h4>
+                        <p>Agile sprints with continuous integration. Rigorous QA testing ensures bug-free, performant code delivered on schedule.</p>
+                    </div>
+                    <i class="fas fa-arrow-right process-arrow"></i>
+                </div>
+                <div class="process-card reveal reveal-delay-1">
+                    <div class="process-number">04</div>
+                    <div class="process-content">
+                        <h4>Launch & Support</h4>
+                        <p>Smooth deployment with monitoring setup. Post-launch support and optimization to ensure long-term success and growth.</p>
+                    </div>
+                    <i class="fas fa-arrow-right process-arrow"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-section" id="tech">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">03</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Tech<br>stack</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Technologies we master to build world-class products.</p>
+                </div>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item reveal"><i class="fab fa-react"></i><span>React</span></div>
+                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-vuejs"></i><span>Vue.js</span></div>
+                <div class="tech-item reveal"><i class="fab fa-node"></i><span>Node.js</span></div>
+                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-python"></i><span>Python</span></div>
+                <div class="tech-item reveal"><i class="fab fa-aws"></i><span>AWS</span></div>
+                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-docker"></i><span>Docker</span></div>
+                <div class="tech-item reveal"><i class="fab fa-figma"></i><span>Figma</span></div>
+                <div class="tech-item reveal reveal-delay-1"><i class="fas fa-database"></i><span>PostgreSQL</span></div>
+                <div class="tech-item reveal"><i class="fab fa-git-alt"></i><span>Git</span></div>
+                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-js"></i><span>TypeScript</span></div>
+                <div class="tech-item reveal"><i class="fab fa-angular"></i><span>Angular</span></div>
+                <div class="tech-item reveal reveal-delay-1"><i class="fas fa-bolt"></i><span>Next.js</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="pricing-section" id="pricing">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">04</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Pricing<br>plans</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Transparent pricing with no hidden fees. Choose what fits your needs.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8 max-w-[1100px] mx-auto">
+                <div class="pricing-card reveal">
+                    <h3>Starter</h3>
+                    <div class="price">$2,999<span>/project</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Single Page Website</li>
+                        <li><i class="fas fa-check"></i> Responsive Design</li>
+                        <li><i class="fas fa-check"></i> Basic SEO Setup</li>
+                        <li><i class="fas fa-check"></i> 2 Revision Rounds</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Custom Animations</li>
+                        <li class="disabled"><i class="fas fa-times"></i> CMS Integration</li>
+                    </ul>
+                    <a href="404.html" class="pricing-btn">Get Started <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="pricing-card featured reveal reveal-delay-1">
+                    <h3>Professional</h3>
+                    <div class="price">$7,999<span>/project</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Multi-page Website</li>
+                        <li><i class="fas fa-check"></i> Advanced Animations</li>
+                        <li><i class="fas fa-check"></i> CMS Integration</li>
+                        <li><i class="fas fa-check"></i> 5 Revision Rounds</li>
+                        <li><i class="fas fa-check"></i> Analytics Setup</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Custom Backend</li>
+                    </ul>
+                    <a href="404.html" class="pricing-btn">Get Started <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="pricing-card reveal reveal-delay-2">
+                    <h3>Enterprise</h3>
+                    <div class="price">Custom<span>/quote</span></div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Full-stack Application</li>
+                        <li><i class="fas fa-check"></i> Custom Backend & API</li>
+                        <li><i class="fas fa-check"></i> AI/ML Integration</li>
+                        <li><i class="fas fa-check"></i> Unlimited Revisions</li>
+                        <li><i class="fas fa-check"></i> 6 Months Support</li>
+                        <li><i class="fas fa-check"></i> Dedicated Team</li>
+                    </ul>
+                    <a href="404.html" class="pricing-btn">Contact Us <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials-section" id="testimonials">
+        <div class="max-w-[1400px] mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+                <div class="lg:col-span-2"><span class="section-label">05</span></div>
+                <div class="lg:col-span-10">
+                    <h2 class="section-title reveal">Client<br>stories</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">What our partners say about working with us.</p>
+                </div>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="testimonial-quote">"Stackly transformed our outdated platform into a modern, high-performing application. Their attention to detail and technical expertise exceeded all expectations."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Client">
+                        <div class="testimonial-author-info">
+                            <h4>Robert Chen</h4>
+                            <p>CTO, FinTech Solutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal reveal-delay-1">
+                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="testimonial-quote">"The team at Stackly delivered our mobile app 2 weeks ahead of schedule. Their agile process and communication made the entire experience seamless."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80" alt="Client">
+                        <div class="testimonial-author-info">
+                            <h4>Maria Santos</h4>
+                            <p>Product Lead, HealthApp</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    <p class="testimonial-quote">"Their AI integration helped us reduce customer support tickets by 60%. Stackly truly understands how to leverage technology for business impact."</p>
+                    <div class="testimonial-author">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&q=80" alt="Client">
+                        <div class="testimonial-author-info">
+                            <h4>David Park</h4>
+                            <p>CEO, RetailMax</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="contact">
+        <div class="max-w-[900px] mx-auto text-center relative z-10">
+            <span class="cta-label">[ LET'S BUILD ]</span>
+            <h2 class="cta-title">Ready to bring<br>your idea to life?</h2>
+            <a href="404.html" class="cta-btn magnetic-btn">
+                <span>Start Your Project</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer-wrapper">
+        <div class="footer-grid">
+            <div>
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden border-2 border-stackly-blue">
+                        <img src="stackly-logo.png" alt="Stackly" class="w-full h-full object-cover">
+                    </div>
+                    <span class="font-mono font-bold text-lg tracking-wider">STACKLY</span>
+                </div>
+                <p class="footer-brand-desc">Innovative software development company crafting digital experiences that matter.</p>
+                <div class="footer-social">
+                    <a href="#" class="footer-social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="#" class="footer-social-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                </div>
+            </div>
+            <div>
+                <span class="footer-heading">/ Quick Links</span>
+                <nav>
+                    <a href="index.html" class="footer-link">Home</a>
+                    <a href="about.html" class="footer-link">About us</a>
+                    <a href="service.html" class="footer-link">Services</a>
+                    <a href="index.html#capabilities" class="footer-link">Capabilities</a>
+                    <a href="casestudy.html" class="footer-link">Case studies</a>
+                    <a href="index.html#team" class="footer-link">Our team</a>
+                    <a href="index.html#insights" class="footer-link">Insights</a>
+                    <a href="contact.html" class="footer-link">Contact</a>
+                </nav>
+            </div>
+            <div>
+                <span class="footer-heading">/ Contact</span>
+                <a href="mailto:hello@stackly.com" class="footer-contact-item">hello@stackly.com</a>
+                <a href="tel:+12127089400" class="footer-contact-item">+1 212-708-9400</a>
+                <p class="footer-address">123 Innovation Drive<br>San Francisco, CA 94102</p>
+                <span class="footer-heading" style="margin-top: 1.5rem;">/ Info</span>
+                <a href="#" class="footer-link">Pricing</a>
+                <a href="#" class="footer-link">FAQ</a>
+                <a href="#" class="footer-link">Careers</a>
+            </div>
+            <div>
+                <span class="footer-heading">/ Ecosystem</span>
+                <div class="space-y-0">
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[01]</span><span class="ecosystem-name">Dribbble</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[02]</span><span class="ecosystem-name">Behance</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[03]</span><span class="ecosystem-name">Github</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[04]</span><span class="ecosystem-name">Codepen</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                    <div class="ecosystem-item">
+                        <div class="flex items-center"><span class="ecosystem-num">[05]</span><span class="ecosystem-name">Figma Community</span></div>
+                        <i class="fas fa-arrow-up-right ecosystem-arrow text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg overflow-hidden border border-gray-700">
+                    <img src="stackly-logo.png" alt="Stackly" class="w-full h-full object-cover">
+                </div>
+                <span class="font-mono font-bold text-sm tracking-wider">STACKLY</span>
+            </div>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Cookie Policy</a>
+            </div>
+            <p class="footer-copyright">2026 Stackly. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Custom Cursor
+        const cursorDot = document.getElementById('cursorDot');
+        const cursorOutline = document.getElementById('cursorOutline');
+        let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        function animateCursor() {
+            outlineX += (mouseX - outlineX) * 0.15;
+            outlineY += (mouseY - outlineY) * 0.15;
+            cursorOutline.style.left = outlineX + 'px';
+            cursorOutline.style.top = outlineY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.querySelectorAll('a, button, .magnetic-btn, .service-card, .process-card, .tech-item, .pricing-card, .testimonial-card, .award-item, .ecosystem-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovering'));
+        });
+
+        // Header Scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const fullscreenMenu = document.getElementById('fullscreenMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            fullscreenMenu.classList.toggle('active');
+            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            fullscreenMenu.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Scroll Reveal
+        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Magnetic Button
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = 'translate(' + (x * 0.3) + 'px, ' + (y * 0.3) + 'px)';
+            });
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+
+    <div class="btn-group">
+      <a href="index.html" class="btn home-btn">🏠 Go Home</a>
+      <a href="contact.html" class="btn contact-btn">📧 Contact Us</a>
+    </div>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - Stackly</title>
+    <title>Case Studies - Stackly</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -50,6 +50,8 @@
         .preloader-text span:nth-child(6) { animation-delay: 0.5s; }
         .preloader-text span:nth-child(7) { animation-delay: 0.6s; }
         .preloader-text span:nth-child(8) { animation-delay: 0.7s; }
+        .preloader-text span:nth-child(9) { animation-delay: 0.8s; }
+        .preloader-text span:nth-child(10) { animation-delay: 0.9s; }
         @keyframes preloaderBounce { 0%, 100% { transform: translateY(0); opacity: 0.3; } 50% { transform: translateY(-20px); opacity: 1; color: #0033cc; } }
 
         /* Custom Cursor */
@@ -120,76 +122,66 @@
         .section-title { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 700; line-height: 1.1; }
         .section-subtitle { font-size: clamp(1rem, 2vw, 1.25rem); color: #888; line-height: 1.6; max-width: 600px; }
 
-        /* ========== SERVICES GRID ========== */
-        .services-section { padding: 8rem 3rem; position: relative; }
-        .service-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 3rem; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; cursor: pointer; }
-        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: #0033cc; transform: scaleX(0); transform-origin: left; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .service-card:hover::before { transform: scaleX(1); }
-        .service-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(0,51,204,0.2); transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
-        .service-card-icon { width: 70px; height: 70px; border-radius: 16px; background: rgba(0,51,204,0.1); display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; z-index: 2; }
-        .service-card:hover .service-card-icon { background: #0033cc; transform: rotate(10deg) scale(1.1); }
-        .service-card-icon i { font-size: 1.75rem; color: #0033cc; transition: color 0.3s; }
-        .service-card:hover .service-card-icon i { color: #fff; }
-        .service-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; position: relative; z-index: 2; }
-        .service-card p { color: #888; line-height: 1.7; margin-bottom: 1.5rem; position: relative; z-index: 2; }
-        .service-card-features { list-style: none; position: relative; z-index: 2; }
-        .service-card-features li { display: flex; align-items: center; gap: 0.75rem; color: #aaa; font-size: 0.9rem; padding: 0.4rem 0; }
-        .service-card-features li i { color: #0033cc; font-size: 0.7rem; }
-        .service-card-number { position: absolute; top: 1.5rem; right: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 3rem; font-weight: 700; color: rgba(0,51,204,0.08); transition: color 0.4s; }
-        .service-card:hover .service-card-number { color: rgba(0,51,204,0.2); }
+        /* ========== FILTER TABS ========== */
+        .filter-tabs { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+        .filter-tab { padding: 0.75rem 1.5rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 50px; background: transparent; color: #888; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; cursor: pointer; transition: all 0.4s; }
+        .filter-tab:hover { border-color: #0033cc; color: #fff; }
+        .filter-tab.active { background: #0033cc; border-color: #0033cc; color: #fff; }
 
-        /* ========== PROCESS SECTION ========== */
-        .process-section { padding: 8rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
-        .process-card { display: flex; gap: 2rem; padding: 2.5rem; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; transition: all 0.5s; position: relative; overflow: hidden; }
-        .process-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 0; background: #0033cc; transition: height 0.5s; }
-        .process-card:hover::before { height: 100%; }
-        .process-card:hover { background: rgba(255,255,255,0.03); border-color: rgba(0,51,204,0.15); transform: translateX(10px); }
-        .process-number { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 700; color: rgba(0,51,204,0.3); line-height: 1; min-width: 60px; transition: color 0.3s; }
-        .process-card:hover .process-number { color: #0033cc; }
-        .process-content h4 { font-size: 1.35rem; font-weight: 600; margin-bottom: 0.75rem; }
-        .process-content p { color: #777; line-height: 1.6; font-size: 0.95rem; }
-        .process-arrow { position: absolute; right: 2rem; top: 50%; transform: translateY(-50%); color: #333; font-size: 1.25rem; transition: all 0.4s; }
-        .process-card:hover .process-arrow { color: #0033cc; transform: translateY(-50%) translateX(5px); }
+        /* ========== CASE STUDY CARDS ========== */
+        .cases-section { padding: 8rem 3rem; position: relative; }
+        .case-card { position: relative; overflow: hidden; border-radius: 20px; cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255,255,255,0.06); }
+        .case-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.4); border-color: rgba(0,51,204,0.2); }
+        .case-card-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); filter: grayscale(20%); }
+        .case-card:hover .case-card-img { transform: scale(1.08); filter: grayscale(0%); }
+        .case-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 40%, transparent 100%); opacity: 0.9; transition: opacity 0.4s; }
+        .case-card:hover .case-card-overlay { opacity: 1; }
+        .case-card-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 2.5rem; transform: translateY(10px); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .case-card:hover .case-card-content { transform: translateY(0); }
+        .case-card-tag { display: inline-block; padding: 0.4rem 1rem; background: rgba(0,51,204,0.2); border: 1px solid rgba(0,51,204,0.3); border-radius: 50px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #0033cc; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .case-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .case-card p { color: #aaa; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; }
+        .case-card-stats { display: flex; gap: 2rem; }
+        .case-card-stat { text-align: center; }
+        .case-card-stat-value { font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 700; color: #fff; }
+        .case-card-stat-label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.25rem; }
+        .case-card-arrow { position: absolute; top: 2rem; right: 2rem; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; opacity: 0; transform: scale(0.8); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .case-card:hover .case-card-arrow { opacity: 1; transform: scale(1); background: #0033cc; }
 
-        /* ========== TECH STACK ========== */
-        .tech-section { padding: 8rem 3rem; position: relative; }
-        .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.5rem; }
-        .tech-item { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 2rem 1rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; transition: all 0.4s; cursor: pointer; }
-        .tech-item:hover { background: rgba(0,51,204,0.08); border-color: rgba(0,51,204,0.3); transform: translateY(-5px); }
-        .tech-item i { font-size: 2.5rem; color: #555; transition: all 0.4s; }
-        .tech-item:hover i { color: #0033cc; transform: scale(1.1); }
-        .tech-item span { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #777; transition: color 0.3s; }
-        .tech-item:hover span { color: #fff; }
+        /* ========== FEATURED CASE STUDY ========== */
+        .featured-case { padding: 8rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
+        .featured-case-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .featured-case-image { position: relative; overflow: hidden; border-radius: 20px; }
+        .featured-case-image img { width: 100%; height: 500px; object-fit: cover; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .featured-case-image:hover img { transform: scale(1.05); }
+        .featured-case-image::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,51,204,0.2) 0%, transparent 50%); z-index: 1; pointer-events: none; }
+        .featured-case-content h3 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.2; }
+        .featured-case-content p { color: #888; line-height: 1.8; margin-bottom: 1.25rem; font-size: 1.05rem; }
+        .featured-case-content .highlight { color: #fff; font-weight: 500; }
+        .featured-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+        .featured-stat { text-align: center; }
+        .featured-stat-value { font-family: 'JetBrains Mono', monospace; font-size: 2.5rem; font-weight: 700; color: #0033cc; }
+        .featured-stat-label { color: #666; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.5rem; }
+        .featured-tag { display: inline-block; padding: 0.5rem 1.25rem; background: rgba(0,51,204,0.15); border: 1px solid rgba(0,51,204,0.3); border-radius: 50px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: #0033cc; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; }
+        .featured-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; background: #0033cc; color: #fff; border-radius: 50px; font-weight: 600; text-decoration: none; transition: all 0.4s; margin-top: 1.5rem; }
+        .featured-btn:hover { background: #0044ff; transform: scale(1.05); }
 
-        /* ========== PRICING CARDS ========== */
-        .pricing-section { padding: 8rem 3rem; position: relative; }
-        .pricing-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 3rem 2.5rem; transition: all 0.5s; position: relative; overflow: hidden; text-align: center; }
-        .pricing-card.featured { background: rgba(0,51,204,0.05); border-color: rgba(0,51,204,0.3); }
-        .pricing-card.featured::before { content: 'POPULAR'; position: absolute; top: 1.5rem; right: -2rem; background: #0033cc; color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; padding: 0.4rem 3rem; transform: rotate(45deg); }
-        .pricing-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.3); border-color: rgba(0,51,204,0.2); }
-        .pricing-card h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .pricing-card .price { font-family: 'JetBrains Mono', monospace; font-size: 3rem; font-weight: 700; color: #fff; margin: 1.5rem 0; }
-        .pricing-card .price span { font-size: 1rem; color: #666; font-weight: 400; }
-        .pricing-features { list-style: none; text-align: left; margin: 2rem 0; }
-        .pricing-features li { display: flex; align-items: center; gap: 0.75rem; color: #aaa; font-size: 0.9rem; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .pricing-features li i { color: #0033cc; font-size: 0.8rem; }
-        .pricing-features li.disabled { color: #444; }
-        .pricing-features li.disabled i { color: #333; }
-        .pricing-btn { display: inline-flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; border: 1px solid rgba(255,255,255,0.2); border-radius: 50px; color: #fff; font-weight: 500; transition: all 0.4s; text-decoration: none; }
-        .pricing-btn:hover { background: #0033cc; border-color: #0033cc; transform: scale(1.05); }
-        .pricing-card.featured .pricing-btn { background: #0033cc; border-color: #0033cc; }
-        .pricing-card.featured .pricing-btn:hover { background: #0044ff; }
+        /* ========== METRICS STRIP ========== */
+        .metrics-strip { padding: 5rem 3rem; position: relative; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .metric-item { text-align: center; padding: 2rem; position: relative; }
+        .metric-item:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(255,255,255,0.06); }
+        .metric-value { font-family: 'JetBrains Mono', monospace; font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700; color: #fff; line-height: 1; }
+        .metric-value .suffix { color: #0033cc; }
+        .metric-label { color: #666; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 1rem; }
 
-        /* ========== TESTIMONIALS ========== */
-        .testimonials-section { padding: 8rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
-        .testimonial-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; padding: 2.5rem; transition: all 0.5s; position: relative; }
-        .testimonial-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(0,51,204,0.2); transform: translateY(-5px); }
-        .testimonial-quote { font-size: 1.1rem; color: #ccc; line-height: 1.7; margin-bottom: 2rem; font-style: italic; }
-        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
-        .testimonial-author img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
-        .testimonial-author-info h4 { font-weight: 600; font-size: 1rem; }
-        .testimonial-author-info p { color: #666; font-size: 0.85rem; }
-        .testimonial-stars { color: #0033cc; margin-bottom: 1.5rem; font-size: 0.9rem; }
+        /* ========== CLIENT LOGOS ========== */
+        .clients-section { padding: 6rem 3rem; position: relative; background: rgba(255,255,255,0.01); }
+        .clients-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 2rem; align-items: center; max-width: 1000px; margin: 0 auto; }
+        .client-logo { display: flex; align-items: center; justify-content: center; padding: 1.5rem; opacity: 0.4; transition: all 0.4s; filter: grayscale(100%); }
+        .client-logo:hover { opacity: 1; filter: grayscale(0%); }
+        .client-logo i { font-size: 2.5rem; color: #fff; }
+        .client-logo span { font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 600; color: #fff; }
 
         /* ========== CTA ========== */
         .cta-section { background: #0033cc; position: relative; overflow: hidden; padding: 8rem 3rem; }
@@ -249,16 +241,22 @@
             .header.scrolled { padding: 0.75rem 1.5rem; }
             .page-hero { min-height: 50vh; padding: 100px 1rem 3rem; }
             .page-title { font-size: clamp(2rem, 10vw, 3.5rem); }
-            .services-section { padding: 4rem 1.5rem; }
-            .service-card { padding: 2rem; }
-            .service-card-number { font-size: 2rem; }
-            .process-section { padding: 4rem 1.5rem; }
-            .process-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
-            .process-arrow { display: none; }
-            .tech-section { padding: 4rem 1.5rem; }
-            .tech-grid { grid-template-columns: repeat(2, 1fr); }
-            .pricing-section { padding: 4rem 1.5rem; }
-            .testimonials-section { padding: 4rem 1.5rem; }
+            .cases-section { padding: 4rem 1.5rem; }
+            .featured-case { padding: 4rem 1.5rem; }
+            .featured-case-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .featured-case-image img { height: 300px; }
+            .featured-case-content h3 { font-size: 1.75rem; }
+            .featured-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+            .featured-stat-value { font-size: 1.5rem; }
+            .metrics-strip { padding: 3rem 1.5rem; }
+            .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+            .metric-item:not(:last-child)::after { display: none; }
+            .clients-section { padding: 3rem 1.5rem; }
+            .clients-grid { grid-template-columns: repeat(3, 1fr); }
+            .filter-tabs { gap: 0.5rem; }
+            .filter-tab { padding: 0.5rem 1rem; font-size: 0.75rem; }
+            .case-card-stats { gap: 1rem; }
+            .case-card-stat-value { font-size: 1rem; }
             .footer-wrapper { padding: 3rem 1.5rem 1.5rem; }
             .cta-section { padding: 4rem 1.5rem; }
         }
@@ -328,7 +326,8 @@
 
         ::selection { background: #0033cc; color: #fff; }
     </style>
-<base target="_blank">
+<!-- <base target="_blank">
+<base target="_blank"> -->
 </head>
 <body>
     <div class="cursor-dot" id="cursorDot"></div>
@@ -337,7 +336,7 @@
     <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="preloader-text">
-            <span>S</span><span>E</span><span>R</span><span>V</span><span>I</span><span>C</span><span>E</span><span>S</span>
+            <span>C</span><span>A</span><span>S</span><span>E</span><span>&nbsp;</span><span>S</span><span>T</span><span>U</span><span>D</span><span>I</span><span>E</span><span>S</span>
         </div>
     </div>
 
@@ -391,272 +390,255 @@
             <div class="page-particle" style="top: 80%; left: 65%; animation-delay: 3.5s;"></div>
         </div>
         <div class="page-hero-content">
-            <span class="page-label">[ OUR SERVICES ]</span>
-            <h1 class="page-title">Digital solutions<br>that <span class="highlight">scale</span></h1>
-            <p class="page-subtitle">From concept to deployment, we deliver end-to-end software solutions that drive business growth and transform user experiences.</p>
+            <span class="page-label">[ CASE STUDIES ]</span>
+            <h1 class="page-title">Real results<br>that <span class="highlight">speak</span></h1>
+            <p class="page-subtitle">Explore how we have helped businesses transform their digital presence, increase revenue, and delight their users.</p>
         </div>
         <div class="scroll-line"></div>
     </section>
 
-    <!-- Services Grid -->
-    <section class="services-section" id="services">
+    <!-- Metrics Strip -->
+    <section class="metrics-strip" id="metrics">
+        <div class="metrics-grid">
+            <div class="metric-item reveal">
+                <div class="metric-value">70<span class="suffix">+</span></div>
+                <div class="metric-label">Projects Delivered</div>
+            </div>
+            <div class="metric-item reveal reveal-delay-1">
+                <div class="metric-value">50<span class="suffix">+</span></div>
+                <div class="metric-label">Happy Clients</div>
+            </div>
+            <div class="metric-item reveal reveal-delay-2">
+                <div class="metric-value">98<span class="suffix">%</span></div>
+                <div class="metric-label">Client Retention</div>
+            </div>
+            <div class="metric-item reveal reveal-delay-3">
+                <div class="metric-value">15<span class="suffix">+</span></div>
+                <div class="metric-label">Countries Served</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Case Study -->
+    <section class="featured-case" id="featured">
         <div class="max-w-[1400px] mx-auto">
             <div class="grid lg:grid-cols-12 gap-8 mb-16">
                 <div class="lg:col-span-2"><span class="section-label">01</span></div>
                 <div class="lg:col-span-10">
-                    <h2 class="section-title reveal">What we<br>do</h2>
-                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Comprehensive digital services tailored to your business needs.</p>
+                    <h2 class="section-title reveal">Featured<br>project</h2>
                 </div>
             </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="service-card reveal">
-                    <div class="service-card-number">01</div>
-                    <div class="service-card-icon"><i class="fas fa-laptop-code"></i></div>
-                    <h3>Web Development</h3>
-                    <p>Custom websites and web applications built with modern frameworks. From landing pages to complex SaaS platforms.</p>
-                    <ul class="service-card-features">
-                        <li><i class="fas fa-check"></i> React / Next.js / Vue</li>
-                        <li><i class="fas fa-check"></i> Responsive & PWA</li>
-                        <li><i class="fas fa-check"></i> API Integration</li>
-                        <li><i class="fas fa-check"></i> Performance Optimized</li>
-                    </ul>
+            <div class="featured-case-grid">
+                <div class="featured-case-image reveal-left">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80" alt="NovaPay Dashboard">
                 </div>
-                <div class="service-card reveal reveal-delay-1">
-                    <div class="service-card-number">02</div>
-                    <div class="service-card-icon"><i class="fas fa-mobile-alt"></i></div>
-                    <h3>Mobile Apps</h3>
-                    <p>Native and cross-platform mobile applications for iOS and Android that deliver exceptional user experiences.</p>
-                    <ul class="service-card-features">
-                        <li><i class="fas fa-check"></i> React Native / Flutter</li>
-                        <li><i class="fas fa-check"></i> iOS & Android</li>
-                        <li><i class="fas fa-check"></i> Push Notifications</li>
-                        <li><i class="fas fa-check"></i> App Store Publishing</li>
-                    </ul>
-                </div>
-                <div class="service-card reveal">
-                    <div class="service-card-number">03</div>
-                    <div class="service-card-icon"><i class="fas fa-paint-brush"></i></div>
-                    <h3>UI/UX Design</h3>
-                    <p>User-centered design that combines aesthetics with functionality. We create interfaces users love to interact with.</p>
-                    <ul class="service-card-features">
-                        <li><i class="fas fa-check"></i> User Research</li>
-                        <li><i class="fas fa-check"></i> Wireframing & Prototyping</li>
-                        <li><i class="fas fa-check"></i> Design Systems</li>
-                        <li><i class="fas fa-check"></i> Usability Testing</li>
-                    </ul>
-                </div>
-                <div class="service-card reveal reveal-delay-1">
-                    <div class="service-card-number">04</div>
-                    <div class="service-card-icon"><i class="fas fa-brain"></i></div>
-                    <h3>AI & Machine Learning</h3>
-                    <p>Intelligent solutions powered by cutting-edge AI. From chatbots to predictive analytics and computer vision.</p>
-                    <ul class="service-card-features">
-                        <li><i class="fas fa-check"></i> NLP & Chatbots</li>
-                        <li><i class="fas fa-check"></i> Predictive Analytics</li>
-                        <li><i class="fas fa-check"></i> Computer Vision</li>
-                        <li><i class="fas fa-check"></i> MLOps Pipeline</li>
-                    </ul>
-                </div>
-                <div class="service-card reveal">
-                    <div class="service-card-number">05</div>
-                    <div class="service-card-icon"><i class="fas fa-cloud"></i></div>
-                    <h3>Cloud & DevOps</h3>
-                    <p>Scalable cloud infrastructure and automated deployment pipelines. We ensure your systems run smoothly 24/7.</p>
-                    <ul class="service-card-features">
-                        <li><i class="fas fa-check"></i> AWS / Azure / GCP</li>
-                        <li><i class="fas fa-check"></i> CI/CD Pipelines</li>
-                        <li><i class="fas fa-check"></i> Kubernetes</li>
-                        <li><i class="fas fa-check"></i> Monitoring & Logging</li>
-                    </ul>
-                </div>
-                <div class="service-card reveal reveal-delay-1">
-                    <div class="service-card-number">06</div>
-                    <div class="service-card-icon"><i class="fas fa-shield-alt"></i></div>
-                    <h3>Cybersecurity</h3>
-                    <p>Protect your digital assets with our comprehensive security solutions. Audit, penetration testing, and compliance.</p>
-                    <ul class="service-card-features">
-                        <li><i class="fas fa-check"></i> Security Audits</li>
-                        <li><i class="fas fa-check"></i> Penetration Testing</li>
-                        <li><i class="fas fa-check"></i> Compliance (GDPR/SOC2)</li>
-                        <li><i class="fas fa-check"></i> Incident Response</li>
-                    </ul>
+                <div class="featured-case-content reveal-right">
+                    <span class="featured-tag">Fintech / SaaS</span>
+                    <h3>NovaPay Payment Platform</h3>
+                    <p>We partnered with NovaPay to build a next-generation payment processing platform that handles <span class="highlight">$2M+ in daily transactions</span> across 12 countries. The platform features real-time fraud detection, multi-currency support, and a seamless merchant onboarding experience.</p>
+                    <p>Our team delivered a <span class="highlight">complete redesign of their legacy system</span>, reducing payment processing time by 40% and increasing merchant sign-ups by 300% in the first quarter after launch.</p>
+                    <div class="featured-stats">
+                        <div class="featured-stat">
+                            <div class="featured-stat-value">300%</div>
+                            <div class="featured-stat-label">User Growth</div>
+                        </div>
+                        <div class="featured-stat">
+                            <div class="featured-stat-value">40%</div>
+                            <div class="featured-stat-label">Faster Processing</div>
+                        </div>
+                        <div class="featured-stat">
+                            <div class="featured-stat-value">12</div>
+                            <div class="featured-stat-label">Countries Live</div>
+                        </div>
+                    </div>
+                    <a href="404.html" class="featured-btn">View Full Case Study <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Process Section -->
-    <section class="process-section" id="process">
+    <!-- Case Studies Grid -->
+    <section class="cases-section" id="cases">
         <div class="max-w-[1400px] mx-auto">
             <div class="grid lg:grid-cols-12 gap-8 mb-16">
                 <div class="lg:col-span-2"><span class="section-label">02</span></div>
                 <div class="lg:col-span-10">
-                    <h2 class="section-title reveal">Our<br>process</h2>
-                    <p class="section-subtitle mt-6 reveal reveal-delay-1">A proven methodology that ensures project success from day one.</p>
+                    <h2 class="section-title reveal">More<br>stories</h2>
+                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Browse our portfolio of successful projects across industries.</p>
                 </div>
             </div>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="process-card reveal">
-                    <div class="process-number">01</div>
-                    <div class="process-content">
-                        <h4>Discovery & Strategy</h4>
-                        <p>We start by understanding your business goals, target audience, and competitive landscape. Deep research drives every decision.</p>
+            <div class="filter-tabs reveal">
+                <button class="filter-tab active" data-filter="all">All Projects</button>
+                <button class="filter-tab" data-filter="fintech">Fintech</button>
+                <button class="filter-tab" data-filter="healthcare">Healthcare</button>
+                <button class="filter-tab" data-filter="ecommerce">E-commerce</button>
+                <button class="filter-tab" data-filter="ai">AI / ML</button>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="casesGrid">
+                <div class="case-card reveal" data-category="healthcare">
+                    <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80" alt="HealthApp" class="case-card-img">
+                    <div class="case-card-overlay"></div>
+                    <div class="case-card-arrow"><i class="fas fa-arrow-up-right"></i></div>
+                    <div class="case-card-content">
+                        <span class="case-card-tag">Healthcare</span>
+                        <h3>HealthApp Telemedicine</h3>
+                        <p>A comprehensive telemedicine platform connecting patients with doctors through video consultations and AI-powered symptom checking.</p>
+                        <div class="case-card-stats">
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">500K+</div>
+                                <div class="case-card-stat-label">Users</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">4.8</div>
+                                <div class="case-card-stat-label">App Rating</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">60%</div>
+                                <div class="case-card-stat-label">Cost Reduction</div>
+                            </div>
+                        </div>
                     </div>
-                    <i class="fas fa-arrow-right process-arrow"></i>
                 </div>
-                <div class="process-card reveal reveal-delay-1">
-                    <div class="process-number">02</div>
-                    <div class="process-content">
-                        <h4>Design & Prototyping</h4>
-                        <p>Wireframes evolve into high-fidelity prototypes. We iterate based on feedback until the design perfectly aligns with your vision.</p>
+                <div class="case-card reveal reveal-delay-1" data-category="ecommerce">
+                    <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80" alt="RetailMax" class="case-card-img">
+                    <div class="case-card-overlay"></div>
+                    <div class="case-card-arrow"><i class="fas fa-arrow-up-right"></i></div>
+                    <div class="case-card-content">
+                        <span class="case-card-tag">E-commerce</span>
+                        <h3>RetailMax Marketplace</h3>
+                        <p>AI-driven e-commerce marketplace with personalized recommendations, real-time inventory, and seamless checkout experience.</p>
+                        <div class="case-card-stats">
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">2M+</div>
+                                <div class="case-card-stat-label">Products</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">35%</div>
+                                <div class="case-card-stat-label">Conversion Up</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">$12M</div>
+                                <div class="case-card-stat-label">GMV Monthly</div>
+                            </div>
+                        </div>
                     </div>
-                    <i class="fas fa-arrow-right process-arrow"></i>
                 </div>
-                <div class="process-card reveal">
-                    <div class="process-number">03</div>
-                    <div class="process-content">
-                        <h4>Development & Testing</h4>
-                        <p>Agile sprints with continuous integration. Rigorous QA testing ensures bug-free, performant code delivered on schedule.</p>
+                <div class="case-card reveal" data-category="ai">
+                    <img src="pic6.webp" alt="DataMind" class="case-card-img">
+                    <div class="case-card-overlay"></div>
+                    <div class="case-card-arrow"><i class="fas fa-arrow-up-right"></i></div>
+                    <div class="case-card-content">
+                        <span class="case-card-tag">AI / ML</span>
+                        <h3>DataMind Analytics</h3>
+                        <p>Enterprise AI platform for predictive analytics and business intelligence, processing 10M+ data points daily.</p>
+                        <div class="case-card-stats">
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">10M+</div>
+                                <div class="case-card-stat-label">Data Points</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">95%</div>
+                                <div class="case-card-stat-label">Accuracy</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">3x</div>
+                                <div class="case-card-stat-label">ROI Increase</div>
+                            </div>
+                        </div>
                     </div>
-                    <i class="fas fa-arrow-right process-arrow"></i>
                 </div>
-                <div class="process-card reveal reveal-delay-1">
-                    <div class="process-number">04</div>
-                    <div class="process-content">
-                        <h4>Launch & Support</h4>
-                        <p>Smooth deployment with monitoring setup. Post-launch support and optimization to ensure long-term success and growth.</p>
+                <div class="case-card reveal reveal-delay-1" data-category="fintech">
+                    <img src="pic10.webp" alt="CryptoVault" class="case-card-img">
+                    <div class="case-card-overlay"></div>
+                    <div class="case-card-arrow"><i class="fas fa-arrow-up-right"></i></div>
+                    <div class="case-card-content">
+                        <span class="case-card-tag">Fintech</span>
+                        <h3>CryptoVault Exchange</h3>
+                        <p>Secure cryptocurrency exchange with institutional-grade security, supporting 50+ digital assets and fiat currencies.</p>
+                        <div class="case-card-stats">
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">50+</div>
+                                <div class="case-card-stat-label">Assets</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">$50M</div>
+                                <div class="case-card-stat-label">Daily Volume</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">0</div>
+                                <div class="case-card-stat-label">Breaches</div>
+                            </div>
+                        </div>
                     </div>
-                    <i class="fas fa-arrow-right process-arrow"></i>
+                </div>
+                <div class="case-card reveal" data-category="healthcare">
+                    <img src="pic5.webp" alt="MedTrack" class="case-card-img">
+                    <div class="case-card-overlay"></div>
+                    <div class="case-card-arrow"><i class="fas fa-arrow-up-right"></i></div>
+                    <div class="case-card-content">
+                        <span class="case-card-tag">Healthcare</span>
+                        <h3>MedTrack Supply Chain</h3>
+                        <p>Blockchain-powered pharmaceutical supply chain tracking system ensuring drug authenticity and cold chain compliance.</p>
+                        <div class="case-card-stats">
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">100%</div>
+                                <div class="case-card-stat-label">Traceability</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">80%</div>
+                                <div class="case-card-stat-label">Fraud Reduction</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">FDA</div>
+                                <div class="case-card-stat-label">Compliant</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="case-card reveal reveal-delay-1" data-category="ecommerce">
+                    <img src="pic9.webp" alt="ShopFlow" class="case-card-img">
+                    <div class="case-card-overlay"></div>
+                    <div class="case-card-arrow"><i class="fas fa-arrow-up-right"></i></div>
+                    <div class="case-card-content">
+                        <span class="case-card-tag">E-commerce</span>
+                        <h3>ShopFlow POS System</h3>
+                        <p>Cloud-based point-of-sale system with real-time inventory sync, multi-store management, and advanced reporting.</p>
+                        <div class="case-card-stats">
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">1,200+</div>
+                                <div class="case-card-stat-label">Stores</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">99.9%</div>
+                                <div class="case-card-stat-label">Uptime</div>
+                            </div>
+                            <div class="case-card-stat">
+                                <div class="case-card-stat-value">45%</div>
+                                <div class="case-card-stat-label">Efficiency Gain</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Tech Stack -->
-    <section class="tech-section" id="tech">
+    <!-- Client Logos -->
+    <section class="clients-section" id="clients">
         <div class="max-w-[1400px] mx-auto">
-            <div class="grid lg:grid-cols-12 gap-8 mb-16">
+            <div class="grid lg:grid-cols-12 gap-8 mb-12">
                 <div class="lg:col-span-2"><span class="section-label">03</span></div>
                 <div class="lg:col-span-10">
-                    <h2 class="section-title reveal">Tech<br>stack</h2>
-                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Technologies we master to build world-class products.</p>
+                    <h2 class="section-title reveal">Trusted<br>by</h2>
                 </div>
             </div>
-            <div class="tech-grid">
-                <div class="tech-item reveal"><i class="fab fa-react"></i><span>React</span></div>
-                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-vuejs"></i><span>Vue.js</span></div>
-                <div class="tech-item reveal"><i class="fab fa-node"></i><span>Node.js</span></div>
-                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-python"></i><span>Python</span></div>
-                <div class="tech-item reveal"><i class="fab fa-aws"></i><span>AWS</span></div>
-                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-docker"></i><span>Docker</span></div>
-                <div class="tech-item reveal"><i class="fab fa-figma"></i><span>Figma</span></div>
-                <div class="tech-item reveal reveal-delay-1"><i class="fas fa-database"></i><span>PostgreSQL</span></div>
-                <div class="tech-item reveal"><i class="fab fa-git-alt"></i><span>Git</span></div>
-                <div class="tech-item reveal reveal-delay-1"><i class="fab fa-js"></i><span>TypeScript</span></div>
-                <div class="tech-item reveal"><i class="fab fa-angular"></i><span>Angular</span></div>
-                <div class="tech-item reveal reveal-delay-1"><i class="fas fa-bolt"></i><span>Next.js</span></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing -->
-    <section class="pricing-section" id="pricing">
-        <div class="max-w-[1400px] mx-auto">
-            <div class="grid lg:grid-cols-12 gap-8 mb-16">
-                <div class="lg:col-span-2"><span class="section-label">04</span></div>
-                <div class="lg:col-span-10">
-                    <h2 class="section-title reveal">Pricing<br>plans</h2>
-                    <p class="section-subtitle mt-6 reveal reveal-delay-1">Transparent pricing with no hidden fees. Choose what fits your needs.</p>
-                </div>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 max-w-[1100px] mx-auto">
-                <div class="pricing-card reveal">
-                    <h3>Starter</h3>
-                    <div class="price">$2,999<span>/project</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Single Page Website</li>
-                        <li><i class="fas fa-check"></i> Responsive Design</li>
-                        <li><i class="fas fa-check"></i> Basic SEO Setup</li>
-                        <li><i class="fas fa-check"></i> 2 Revision Rounds</li>
-                        <li class="disabled"><i class="fas fa-times"></i> Custom Animations</li>
-                        <li class="disabled"><i class="fas fa-times"></i> CMS Integration</li>
-                    </ul>
-                    <a href="404.html" class="pricing-btn">Get Started <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="pricing-card featured reveal reveal-delay-1">
-                    <h3>Professional</h3>
-                    <div class="price">$7,999<span>/project</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Multi-page Website</li>
-                        <li><i class="fas fa-check"></i> Advanced Animations</li>
-                        <li><i class="fas fa-check"></i> CMS Integration</li>
-                        <li><i class="fas fa-check"></i> 5 Revision Rounds</li>
-                        <li><i class="fas fa-check"></i> Analytics Setup</li>
-                        <li class="disabled"><i class="fas fa-times"></i> Custom Backend</li>
-                    </ul>
-                    <a href="404.html" class="pricing-btn">Get Started <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="pricing-card reveal reveal-delay-2">
-                    <h3>Enterprise</h3>
-                    <div class="price">Custom<span>/quote</span></div>
-                    <ul class="pricing-features">
-                        <li><i class="fas fa-check"></i> Full-stack Application</li>
-                        <li><i class="fas fa-check"></i> Custom Backend & API</li>
-                        <li><i class="fas fa-check"></i> AI/ML Integration</li>
-                        <li><i class="fas fa-check"></i> Unlimited Revisions</li>
-                        <li><i class="fas fa-check"></i> 6 Months Support</li>
-                        <li><i class="fas fa-check"></i> Dedicated Team</li>
-                    </ul>
-                    <a href="404.html" class="pricing-btn">Contact Us <i class="fas fa-arrow-right"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="testimonials-section" id="testimonials">
-        <div class="max-w-[1400px] mx-auto">
-            <div class="grid lg:grid-cols-12 gap-8 mb-16">
-                <div class="lg:col-span-2"><span class="section-label">05</span></div>
-                <div class="lg:col-span-10">
-                    <h2 class="section-title reveal">Client<br>stories</h2>
-                    <p class="section-subtitle mt-6 reveal reveal-delay-1">What our partners say about working with us.</p>
-                </div>
-            </div>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="testimonial-card reveal">
-                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="testimonial-quote">"Stackly transformed our outdated platform into a modern, high-performing application. Their attention to detail and technical expertise exceeded all expectations."</p>
-                    <div class="testimonial-author">
-                        <img src="pic18.webp" alt="Client">
-                        <div class="testimonial-author-info">
-                            <h4>Robert Chen</h4>
-                            <p>CTO, FinTech Solutions</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card reveal reveal-delay-1">
-                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="testimonial-quote">"The team at Stackly delivered our mobile app 2 weeks ahead of schedule. Their agile process and communication made the entire experience seamless."</p>
-                    <div class="testimonial-author">
-                        <img src="pic19.webp" alt="Client">
-                        <div class="testimonial-author-info">
-                            <h4>Maria Santos</h4>
-                            <p>Product Lead, HealthApp</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-card reveal">
-                    <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
-                    <p class="testimonial-quote">"Their AI integration helped us reduce customer support tickets by 60%. Stackly truly understands how to leverage technology for business impact."</p>
-                    <div class="testimonial-author">
-                        <img src="pic20.webp" alt="Client">
-                        <div class="testimonial-author-info">
-                            <h4>David Park</h4>
-                            <p>CEO, RetailMax</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="clients-grid reveal">
+                <div class="client-logo"><i class="fab fa-google"></i></div>
+                <div class="client-logo"><i class="fab fa-microsoft"></i></div>
+                <div class="client-logo"><i class="fab fa-amazon"></i></div>
+                <div class="client-logo"><i class="fab fa-spotify"></i></div>
+                <div class="client-logo"><i class="fab fa-airbnb"></i></div>
+                <div class="client-logo"><i class="fab fa-stripe"></i></div>
             </div>
         </div>
     </section>
@@ -664,8 +646,8 @@
     <!-- CTA -->
     <section class="cta-section" id="contact">
         <div class="max-w-[900px] mx-auto text-center relative z-10">
-            <span class="cta-label">[ LET'S BUILD ]</span>
-            <h2 class="cta-title">Ready to bring<br>your idea to life?</h2>
+            <span class="cta-label">[ YOUR STORY NEXT ]</span>
+            <h2 class="cta-title">Let's create<br>something great</h2>
             <a href="404.html" class="cta-btn magnetic-btn">
                 <span>Start Your Project</span>
                 <i class="fas fa-arrow-right"></i>
@@ -690,7 +672,7 @@
                     <a href="404.html" class="footer-social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="404.html" class="footer-social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                     <a href="404.html" class="footer-social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="404.html" class="footer-social-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
+                    <!-- <a href="404.html" class="footer-social-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a> -->
                 </div>
             </div>
             <div>
@@ -709,8 +691,8 @@
             <div>
                 <span class="footer-heading">/ Contact</span>
                 <a href="mailto:hello@stackly.com" class="footer-contact-item">hello@stackly.com</a>
-                <a href="tel:+12127089400" class="footer-contact-item">+1 212-708-9400</a>
-                <p class="footer-address">123 Innovation Drive<br>San Francisco, CA 94102</p>
+                <a href="tel:+12127089400" class="footer-contact-item">9108765432</a>
+              <a href="https://www.google.com/maps/dir/?api=1&destination=123+Chinna+thirupathi,+Salem" target="_blank" class="footer-contact-item">View on Map</a>
                 <span class="footer-heading" style="margin-top: 1.5rem;">/ Info</span>
                 <a href="404.html" class="footer-link">Pricing</a>
                 <a href="404.html" class="footer-link">FAQ</a>
@@ -743,117 +725,141 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <div class="flex items-center gap-3">
+            <!-- <div class="flex items-center gap-3">
                 <div class="w-8 h-8 rounded-lg overflow-hidden border border-gray-700">
                     <img src="stackly-logo.webp" alt="Stackly" class="w-full h-full object-cover">
                 </div>
                 <span class="font-mono font-bold text-sm tracking-wider">STACKLY</span>
-            </div>
+            </div> -->
             <div class="footer-legal">
                 <a href="404.html">Privacy Policy</a>
                 <a href="404.html">Terms of Service</a>
-                <a href="404.html">Cookie Policy</a>
+                <a href="404.html ">Cookie Policy</a>
             </div>
             <p class="footer-copyright">2026 Stackly. All rights reserved.</p>
         </div>
     </footer>
 
-    <script>
-        // Preloader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('preloader').classList.add('hidden');
-            }, 2000);
-        });
 
-        // Custom Cursor
-        const cursorDot = document.getElementById('cursorDot');
-        const cursorOutline = document.getElementById('cursorOutline');
-        let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
-        });
-
-        function animateCursor() {
-            outlineX += (mouseX - outlineX) * 0.15;
-            outlineY += (mouseY - outlineY) * 0.15;
-            cursorOutline.style.left = outlineX + 'px';
-            cursorOutline.style.top = outlineY + 'px';
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        document.querySelectorAll('a, button, .magnetic-btn, .service-card, .process-card, .tech-item, .pricing-card, .testimonial-card, .award-item, .ecosystem-item').forEach(el => {
-            el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovering'));
-            el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovering'));
-        });
-
-        // Header Scroll
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) header.classList.add('scrolled');
-            else header.classList.remove('scrolled');
-        });
-
-        // Hamburger Menu
-        const hamburger = document.getElementById('hamburger');
-        const fullscreenMenu = document.getElementById('fullscreenMenu');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            fullscreenMenu.classList.toggle('active');
-            document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : '';
-        });
-
-        function closeMenu() {
-            hamburger.classList.remove('active');
-            fullscreenMenu.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Scroll Reveal
-        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+        <script>
+            // Preloader
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    document.getElementById('preloader').classList.add('hidden');
+                }, 2000);
             });
-        }, { threshold: 0.1 });
-        revealElements.forEach(el => revealObserver.observe(el));
 
-        // Magnetic Button
-        document.querySelectorAll('.magnetic-btn').forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = 'translate(' + (x * 0.3) + 'px, ' + (y * 0.3) + 'px)';
-            });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
+            // Custom Cursor
+            const cursorDot = document.getElementById('cursorDot');
+            const cursorOutline = document.getElementById('cursorOutline');
+            let mouseX = 0, mouseY = 0, outlineX = 0, outlineY = 0;
 
-        // Smooth Scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                cursorDot.style.left = mouseX + 'px';
+                cursorDot.style.top = mouseY + 'px';
             });
-        });
-    </script>
 
+            function animateCursor() {
+                outlineX += (mouseX - outlineX) * 0.15;
+                outlineY += (mouseY - outlineY) * 0.15;
+                cursorOutline.style.left = outlineX + 'px';
+                cursorOutline.style.top = outlineY + 'px';
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+
+            document.querySelectorAll('a, button, .magnetic-btn, .case-card, .ecosystem-item, .client-logo, .filter-tab').forEach(el => {
+                el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovering'));
+            });
+
+            // Header Scroll
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
+            });
+
+            // Hamburger Menu
+            const hamburger = document.getElementById('hamburger');
+            const fullscreenMenu = document.getElementById('fullscreenMenu');
+
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                fullscreenMenu.classList.toggle('active');
+                document.body.style.overflow = fullscreenMenu.classList.contains('active') ? 'hidden' : '';
+            });
+
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                fullscreenMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            // Scroll Reveal
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Filter Tabs
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            const caseCards = document.querySelectorAll('.case-card');
+
+            filterTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    filterTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    const filter = tab.dataset.filter;
+                    caseCards.forEach(card => {
+                        if (filter === 'all' || card.dataset.category === filter) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.style.opacity = '1', 10);
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.display = 'none', 300);
+                        }
+                    });
+                });
+            });
+
+            // Magnetic Button
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = 'translate(' + (x * 0.3) + 'px, ' + (y * 0.3) + 'px)';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = 'translate(0, 0)';
+                });
+            });
+
+            // Smooth Scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        </script>
+
+    
+    
     <div class="btn-group">
       <a href="index.html" class="btn home-btn">🏠 Go Home</a>
       <a href="contact.html" class="btn contact-btn">📧 Contact Us</a>
     </div>
 </body>
-</html>
+    </html>

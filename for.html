@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly - Forgot Password</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#4f46e5,#7c3aed,#9333ea);
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:420px;
+background:#fff;
+padding:35px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+.logo{
+text-align:center;
+margin-bottom:25px;
+}
+
+.logo img{
+width:80px;
+height:80px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.logo h1{
+color:#4f46e5;
+margin-top:10px;
+}
+
+.logo p{
+color:#666;
+font-size:14px;
+margin-top:5px;
+}
+
+.input-box{
+margin-bottom:20px;
+}
+
+.input-box label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
+
+.input-box input{
+width:100%;
+padding:14px;
+border:2px solid #ddd;
+border-radius:10px;
+outline:none;
+}
+
+.input-box input:focus{
+border-color:#6d28d9;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+background:#6d28d9;
+color:#fff;
+font-size:16px;
+font-weight:600;
+border-radius:10px;
+cursor:pointer;
+}
+
+button:hover{
+background:#5b21b6;
+}
+
+.success{
+display:none;
+margin-top:15px;
+padding:12px;
+background:#d1fae5;
+color:#065f46;
+border-radius:8px;
+font-size:14px;
+text-align:center;
+}
+
+.back{
+text-align:center;
+margin-top:20px;
+}
+
+.back a{
+text-decoration:none;
+color:#6d28d9;
+font-weight:600;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="logo">
+<img src="ChatGPT Image May 29, 2026, 03_24_16 PM.png" alt="Stackly Logo">
+<h1>Stackly</h1>
+<p>Forgot Your Password?</p>
+</div>
+
+<form id="forgotForm">
+
+<div class="input-box">
+<label>Email Address</label>
+<input
+type="email"
+id="email"
+placeholder="Enter your registered email"
+required>
+</div>
+
+<button type="submit">
+Send Reset Link
+</button>
+
+<div class="success" id="successMsg">
+Password reset link has been sent to your email.
+</div>
+
+<div class="back">
+<a href="log.html">← Back to Login</a>
+</div>
+
+</form>
+
+</div>
+
+<script>
+document.getElementById("forgotForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+document.getElementById("successMsg")
+.style.display="block";
+
+});
+</script>
+
+</body>
+</html>

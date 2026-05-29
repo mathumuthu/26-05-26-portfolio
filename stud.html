@@ -106,12 +106,56 @@
             border-radius: 15px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .top-header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+            min-width: 0;
         }
 
         .page-title {
             font-size: 28px;
             color: #333;
             font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Search Bar */
+        .search-bar-container {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 40px 12px 15px;
+            border: 2px solid #e0e2e5;
+            border-radius: 50px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .search-bar:focus {
+            border-color: #0033cc;
+            box-shadow: 0 0 0 3px rgba(0,51,204,0.1);
+        }
+
+        .search-bar-container .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 16px;
+            pointer-events: none;
         }
 
         .user-info {
@@ -564,6 +608,15 @@
                 text-align: center;
             }
 
+            .top-header-left {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-bar-container {
+                max-width: 100%;
+            }
+
             .page-title {
                 font-size: 22px;
             }
@@ -580,6 +633,20 @@
             .data-table th,
             .data-table td {
                 padding: 10px 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-header {
+                padding: 15px;
+            }
+
+            .search-bar-container {
+                max-width: 100%;
+            }
+
+            .user-info {
+                gap: 10px;
             }
         }
 
@@ -649,7 +716,7 @@
           color:#fff;
           transform:translateY(-3px);
         }
-        
+
         @media(max-width:768px){
           .btn-group{
             padding: 1.5rem 0.75rem;
@@ -660,7 +727,7 @@
             font-size: 14px;
           }
         }
-        
+
         @media(max-width:600px){
           .btn-group{
             flex-direction: column;
@@ -672,6 +739,7 @@
           }
         }
     </style>
+<base target="_blank">
 <base target="_blank">
 </head>
 <body>
@@ -685,7 +753,7 @@
     <!-- Sidebar -->
     <nav class="sidebar">
         <div class="sidebar-header" style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 20px;">
-            <div style="width: 50px; height: 50px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, c#c4c8d3, #929aaf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,51,204,0.3);">
+            <div style="width: 50px; height: 50px; border-radius: 12px; overflow: hidden; background: linear-gradient(135deg, #c4c8d3, #929aaf); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,51,204,0.3);">
                 <img src="stackly-logo.webp" alt="Stackly" style="width: 36px; height: 36px; object-fit: cover; border-radius: 8px;">
             </div>
             <div>
@@ -732,15 +800,19 @@
 
         <!-- Top Header -->
         <div class="top-header">
-            <h1 class="page-title" id="pageTitle">Dashboard</h1>
+            <div class="top-header-left">
+                <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                <div class="search-bar-container">
+                    <input type="text" class="search-bar" placeholder="Search courses, assignments, schedule..." id="searchInput">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
             <div class="user-info">
                 <div class="notification-icon">
                     🔔
                     <span class="badge">3</span>
                 </div>
-                <div class="user-avatar" style="background: linear-gradient(135deg, #0033cc, #0044ff); overflow: hidden;">
-                    <img src="stackly-logo.webp" alt="User" style="width: 100%; height: 100%; object-fit: cover;">
-                </div>
+                <div class="user-avatar" id="userAvatar">K</div>
             </div>
         </div>
 
@@ -1050,11 +1122,11 @@
                     <h3><span>👤</span> Profile Settings</h3>
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" class="form-control" value="Alex Johnson">
+                        <input type="text" class="form-control" value="Karthi" id="fullNameInput">
                     </div>
                     <div class="form-group">
                         <label>Email Address</label>
-                        <input type="email" class="form-control" value="alex.johnson@student.edu">
+                        <input type="email" class="form-control" value="karthi@student.edu">
                     </div>
                     <div class="form-group">
                         <label>Phone Number</label>
@@ -1064,7 +1136,7 @@
                         <label>Student ID</label>
                         <input type="text" class="form-control" value="STU2024001" readonly style="background: #f0f2f5;">
                     </div>
-                    <button class="btn btn-primary">Save Changes</button>
+                    <button class="btn btn-primary" onclick="updateAvatar()">Save Changes</button>
                 </div>
 
                 <div class="content-card">
@@ -1158,6 +1230,72 @@
     </main>
 
     <script>
+        // User Data - Change this to update avatar
+        const userData = {
+            name: "Karthi",
+            firstLetter: "K"
+        };
+
+        // Update avatar on load
+        function initAvatar() {
+            const avatar = document.getElementById('userAvatar');
+            if (avatar && userData.firstLetter) {
+                avatar.textContent = userData.firstLetter.toUpperCase();
+            }
+        }
+
+        // Update avatar from settings name
+        function updateAvatar() {
+            const nameInput = document.getElementById('fullNameInput');
+            if (nameInput && nameInput.value.trim()) {
+                const firstLetter = nameInput.value.trim().charAt(0).toUpperCase();
+                const avatar = document.getElementById('userAvatar');
+                if (avatar) {
+                    avatar.textContent = firstLetter;
+                }
+                userData.firstLetter = firstLetter;
+                userData.name = nameInput.value.trim();
+                alert('Profile updated! Avatar letter changed to: ' + firstLetter);
+            }
+        }
+
+        // Search functionality
+        function initSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    const query = e.target.value.toLowerCase();
+                    const activeSection = document.querySelector('.page-section.active');
+                    if (!activeSection) return;
+
+                    // Search in tables
+                    const tables = activeSection.querySelectorAll('.data-table tbody tr');
+                    tables.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = query ? 'none' : '';
+                        }
+                    });
+
+                    // Search in cards
+                    const cards = activeSection.querySelectorAll('.course-card, .stat-card, .timeline-item');
+                    cards.forEach(card => {
+                        const text = card.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            card.style.opacity = '1';
+                            card.style.display = '';
+                        } else if (query) {
+                            card.style.opacity = '0.3';
+                        } else {
+                            card.style.opacity = '1';
+                        }
+                    });
+                });
+            }
+        }
+
         // Show/Hide Pages
         function showPage(pageId, element) {
             // Hide all pages
@@ -1202,6 +1340,20 @@
             setTimeout(() => {
                 selectedPage.classList.remove('animate-slide');
             }, 400);
+
+            // Clear search when switching pages
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.value = '';
+                // Reset all hidden items
+                const activeSection = document.querySelector('.page-section.active');
+                if (activeSection) {
+                    const rows = activeSection.querySelectorAll('.data-table tbody tr');
+                    rows.forEach(row => row.style.display = '');
+                    const cards = activeSection.querySelectorAll('.course-card, .stat-card, .timeline-item');
+                    cards.forEach(card => card.style.opacity = '1');
+                }
+            }
         }
 
         // Mobile Sidebar Toggle
@@ -1222,13 +1374,17 @@
                     bar.style.width = width;
                 }, 300);
             });
+
+            // Initialize avatar and search
+            initAvatar();
+            initSearch();
         });
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
             const sidebar = document.querySelector('.sidebar');
             const toggle = document.querySelector('.menu-toggle');
-            
+
             if (window.innerWidth <= 768 && 
                 sidebar.classList.contains('active') &&
                 !sidebar.contains(e.target) && 
@@ -1240,7 +1396,7 @@
 
     <div class="btn-group">
       <a href="index.html" class="btn home-btn">🏠 Go Home</a>
-      <a href="contact.html" class="btn contact-btn">📧 Contact Us</a>
+      <!-- <a href="contact.html" class="btn contact-btn">📧 Contact Us</a> -->
     </div>
 </body>
-</html>bgb
+</html>

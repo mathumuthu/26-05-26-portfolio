@@ -242,6 +242,20 @@ alert("Enter valid email");
 return;
 }
 
+
+const username = document.getElementById("email").value;
+
+localStorage.setItem("loggedInUser", username);
+
+window.location.href = "dashboard.html";
+
+
+
+
+
+
+
+
 /* REDIRECT */
 if(role==="Administrator"){
     window.location.href="dash.html";

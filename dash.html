@@ -91,7 +91,7 @@
                  <!-- <img src="logo.webp" alt="BioTech Labs Logo" class="w-10 h-10 rounded-lg shadow-md logo-img">  -->
                 
                 <!-- OPTION 2: External URL -->
-                 <img src="logo.webp" alt="BioTech Labs Logo" class="w-10 h-10 rounded-lg shadow-md logo-img"> 
+                 <img src="chat.png" alt="BioTech Labs Logo" class="w-10 h-10 rounded-lg shadow-md logo-img"> 
                 
                 <!-- OPTION 3: Placeholder (replace with your actual logo) -->
                 <!-- <div class="w-10 h-10 gradient-bg rounded-lg flex items-center justify-center text-white shadow-md">
@@ -151,7 +151,7 @@
 
             <!-- Mobile Logo in Sidebar - REPLACE SRC WITH YOUR LOGO -->
             <div class="lg:hidden p-4 border-b border-gray-100">
-                <a href="Dash1.html" target="_blank" class="flex items-center gap-3 logo-hover">
+                <a href="dash.html" target="_blank" class="flex items-center gap-3 logo-hover">
                     <!-- OPTION 1: Your Logo Image -->
                     <!-- <img src="/path/to/your/logo.png" alt="BioTech Labs Logo" class="w-10 h-10 rounded-lg shadow-md logo-img"> -->
                     
@@ -228,7 +228,7 @@
 
             <!-- Sidebar Logout Button (Mobile & Desktop) -->
             <div class="p-4 border-t border-gray-200">
-              <a href="login.html"> <button onclick="handleLogout()" class="logout-btn w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all group">
+              <a href="index.html"> <button onclick="handleLogout()" class="logout-btn w-full flex items-center gap-3 px-4 py-3 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all group">
                     <i class="fas fa-sign-out-alt w-5 text-center group-hover:text-red-600 transition-colors"></i>
                     <span class="font-medium">Logout</span>
                 </button></a> 
@@ -285,13 +285,19 @@
                     </button></a> -->
 
                     <div class="flex items-center gap-3 pl-4 border-l border-gray-200">
-                        <div class="text-right">
-                            <p class="text-sm font-semibold text-gray-900">Alex Davidson</p>
-                            <p class="text-xs text-gray-500">System Administrator</p>
-                        </div>
-                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-semibold cursor-pointer hover:bg-purple-200 transition-colors border-2 border-purple-500">
-                            AD
-                        </div>
+                     <div class="text-right">
+    <p id="userName" class="text-sm font-semibold text-gray-900">
+        User
+    </p>
+    <p class="text-xs text-gray-500">
+        System Administrator
+    </p>
+</div>
+
+<div id="userInitial"
+class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-semibold cursor-pointer hover:bg-purple-200 transition-colors border-2 border-purple-500">
+    U
+</div>
                     </div>
                 </div>
             </header>
@@ -1510,6 +1516,46 @@
                 closeSidebar();
             }
         });
-    </script>
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const user = localStorage.getItem("loggedInUser");
+
+    if(user){
+
+        document.getElementById("userName").innerText = user;
+
+        const initials = user
+            .split(" ")
+            .map(word => word.charAt(0))
+            .join("")
+            .toUpperCase();
+
+        document.getElementById("userInitial").innerText = initials;
+    }
+
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
+
+
 </html>
